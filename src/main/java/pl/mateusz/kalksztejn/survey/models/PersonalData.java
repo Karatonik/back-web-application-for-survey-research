@@ -30,4 +30,17 @@ public class PersonalData {
 
     @OneToOne
     private User user;
+
+    public PersonalData(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
+            , Education education, LaborSector laborSector, MaritalStatus maritalStatus, User user) {
+        this.age = age;
+        this.gender = gender;
+        this.sizeOfTheHometown = sizeOfTheHometown;
+        this.sizeOfTown = sizeOfTown;
+        this.grossEarnings = grossEarnings;
+        this.education = education;
+        this.laborSector = laborSector;
+        this.maritalStatus = maritalStatus;
+        this.user = user;
+    }
 }

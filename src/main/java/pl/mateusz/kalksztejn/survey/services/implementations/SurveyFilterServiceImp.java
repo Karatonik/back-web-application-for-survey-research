@@ -1,5 +1,6 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
@@ -17,9 +18,9 @@ import java.util.Optional;
 @Service
 public class SurveyFilterServiceImp implements SurveyFilterService {
 
-    private SurveyFilterRepository surveyFilterRepository;
-    private SurveyRepository surveyRepository;
-
+    SurveyFilterRepository surveyFilterRepository;
+    SurveyRepository surveyRepository;
+    @Autowired
     public SurveyFilterServiceImp(SurveyFilterRepository surveyFilterRepository
             , SurveyRepository surveyRepository) {
         this.surveyFilterRepository = surveyFilterRepository;

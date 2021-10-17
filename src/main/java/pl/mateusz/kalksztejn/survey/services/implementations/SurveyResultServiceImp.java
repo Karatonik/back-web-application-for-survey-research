@@ -1,5 +1,6 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyResult;
 import pl.mateusz.kalksztejn.survey.models.User;
@@ -13,10 +14,10 @@ import java.util.Optional;
 
 public class SurveyResultServiceImp implements SurveyResultService {
 
-    private SurveyResultRepository surveyResultRepository;
-    private SurveyRepository surveyRepository;
-    private UserRepository userRepository;
-
+    SurveyResultRepository surveyResultRepository;
+    SurveyRepository surveyRepository;
+    UserRepository userRepository;
+    @Autowired
     public SurveyResultServiceImp(SurveyResultRepository surveyResultRepository
             , SurveyRepository surveyRepository, UserRepository userRepository) {
         this.surveyResultRepository = surveyResultRepository;
@@ -40,6 +41,17 @@ public class SurveyResultServiceImp implements SurveyResultService {
         }
         return new SurveyResult();
     }
+
+    @Override
+    public boolean delete(Long id) {
+        Optional<SurveyResult> optionalSurveyResult = surveyResultRepository.findById(id);
+        if(optionalSurveyResult.isPresent()){
+            surveyResultRepository.delete(optionalSurveyResult.get());
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public SurveyResult set(SurveyResult surveyResult, Long surveyId) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);

@@ -11,5 +11,7 @@ public interface QueryService {
 
     Query set(Long surveyId,Long numberOfQuery , String question, ArrayList<String>  answers,boolean checkQuery ,Long correctAnswer);
 
-    Query get(Long id);
+    Query get(Long queryId);
+
+    boolean delete(Long queryId);
 }

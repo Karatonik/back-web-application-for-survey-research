@@ -28,4 +28,6 @@ public interface PersonalDataRepository extends JpaRepository<PersonalData,Long>
             ,@Param("grossEarningsMax") Long grossEarningsMax
             ,@Param("laborSectors") List<LaborSector> laborSectors
             ,@Param("maritalStatuses") List<MaritalStatus> maritalStatuses);
+
+    PersonalData findByUser(User user);
 }

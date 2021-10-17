@@ -1,11 +1,13 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Query;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyResult;
 import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
+import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.SurveyService;
 
 import java.util.ArrayList;
@@ -14,15 +16,34 @@ import java.util.Optional;
 
 @Service
 public class SurveyServiceImp implements SurveyService {
-    private  SurveyRepository surveyRepository;
 
-    public SurveyServiceImp(SurveyRepository surveyRepository) {
+    SurveyRepository surveyRepository;
+    UserRepository userRepository;
+    @Autowired
+    public SurveyServiceImp(SurveyRepository surveyRepository, UserRepository userRepository) {
         this.surveyRepository = surveyRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Survey get(Long surveyId) {
         return surveyRepository.findById(surveyId).orElse(new Survey());
+    }
+
+    @Override
+    public Survey set(String name, String email) {
+        Optional<User>optionalUser = userRepository.findById(email);
+        return optionalUser.map(user -> surveyRepository.save(new Survey(name, user))).orElseGet(Survey::new);
+    }
+
+    @Override
+    public boolean delete(Long surveyId) {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
+        if(optionalSurvey.isPresent()){
+            surveyRepository.delete(optionalSurvey.get());
+            return true;
+        }
+        return false;
     }
 
     @Override

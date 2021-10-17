@@ -27,4 +27,8 @@ public class Survey {
     @OneToMany(mappedBy = "survey")
     private List<SurveyResult> surveyResults;
 
+    public Survey(String name, User owner) {
+        this.name = name;
+        this.owner = owner;
+    }
 }

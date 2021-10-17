@@ -11,6 +11,10 @@ public interface SurveyService {
 
     Survey get(Long surveyId);
 
+    Survey set(String name, String email);
+
+    boolean delete(Long surveyId);
+
     User getOwner(Long surveyId);
 
     List<SurveyResult> getSurveyResults(Long surveyId);

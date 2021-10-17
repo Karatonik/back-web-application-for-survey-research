@@ -1,41 +1,62 @@
 package pl.mateusz.kalksztejn.survey.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.hash.Hashing;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity(name = "Person")
-@EqualsAndHashCode
 public class User {
     @Id
-   private String email;
+    private String email;
 
-   private String password;
+    private String password;
 
-   private long points;
+    private long points;
 
-   private boolean activated;
+    private boolean activated;
 
-   @OneToMany
-   private List<Payment> payments;
+    @JsonIgnore
+    private String userKey;
+
+    @OneToMany
+    private List<Payment> payments;
 
     @OneToMany(mappedBy = "owner")
-   private List<Survey> userSurveyList;
+    private List<Survey> userSurveyList;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.activated=false;
-        this.points=0;
-        this.userSurveyList=new ArrayList<>();
+        this.activated = false;
+        this.userKey = Hashing.sha256()
+                .hashString(String.valueOf(hashCode()), StandardCharsets.UTF_8)
+                .toString();
+        this.points = 0;
+        this.userSurveyList = new ArrayList<>();
         this.payments = new ArrayList<>();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail(), getPassword(), new Date(System.currentTimeMillis()));
+    }
+
+    public void getNewKey() {
+        this.userKey = Hashing.sha256()
+                .hashString(String.valueOf(hashCode()), StandardCharsets.UTF_8)
+                .toString();
     }
 }

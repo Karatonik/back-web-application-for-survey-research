@@ -8,9 +8,15 @@ import java.util.Set;
 
 public interface UserService {
 
+    boolean confirmation(String key);
+
+    boolean deleteWithKey(String key);
+
     User set (String email ,String password);
 
     User get(String email);
+
+    boolean delete(String email);
 
     boolean changePassword(String email ,String oldPassword ,String newPassword);
 

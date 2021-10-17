@@ -1,5 +1,6 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Query;
 import pl.mateusz.kalksztejn.survey.models.Survey;
@@ -12,9 +13,10 @@ import java.util.*;
 @Service
 public class QueryServiceImp implements QueryService {
 
-    private QueryRepository queryRepository;
-    private SurveyRepository surveyRepository;
+    QueryRepository queryRepository;
+    SurveyRepository surveyRepository;
 
+    @Autowired
     public QueryServiceImp(QueryRepository queryRepository, SurveyRepository surveyRepository) {
         this.queryRepository = queryRepository;
         this.surveyRepository = surveyRepository;
@@ -37,8 +39,19 @@ public class QueryServiceImp implements QueryService {
     }
 
     @Override
-    public Query get(Long id) {
-        return queryRepository.getById(id);
+    public Query get(Long queryId) {
+        return queryRepository.getById(queryId);
+    }
+
+    @Override
+    public boolean delete(Long queryId) {
+        Optional<Query> optionalQuery = queryRepository.findById(queryId);
+
+        if(optionalQuery.isPresent()){
+            queryRepository.delete(optionalQuery.get());
+            return true;
+        }
+        return false;
     }
 
 }
