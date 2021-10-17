@@ -17,8 +17,8 @@ import javax.persistence.*;
 public class PersonalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
+
     private Long age;
     private Gender gender;
     private Long sizeOfTheHometown;
