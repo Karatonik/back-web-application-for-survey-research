@@ -26,5 +26,4 @@ public class SurveyResult {
     @Column(name="response")
     @ElementCollection(targetClass=Long.class)
     private List<Long> responses;
-
 }

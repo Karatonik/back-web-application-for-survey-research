@@ -3,6 +3,7 @@ package pl.mateusz.kalksztejn.survey.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.PersonalData;
+import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
 import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.enums.Education;
 import pl.mateusz.kalksztejn.survey.models.enums.Gender;
@@ -28,15 +29,30 @@ public class PersonalDataServiceImp implements PersonalDataService {
     }
 
     @Override
+    public List<User> findAllByParameters(SurveyFilter surveyFilter) {
+        return personalDataRepository.findAllByParameters(surveyFilter.getAgeMin()
+                ,surveyFilter.getAgeMax(),surveyFilter.getGenders(), surveyFilter.getEducations()
+                ,surveyFilter.getSizeOfTheHometownMin(), surveyFilter.getSizeOfTheHometownMax()
+                ,surveyFilter.getSizeOfTownMin(),surveyFilter.getSizeOfTownMax()
+                ,surveyFilter.getGrossEarningsMin(),surveyFilter.getGrossEarningsMax()
+                ,surveyFilter.getLaborSectors(),surveyFilter.getMaritalStatuses());
+    }
+
+    @Override
     public List<User> findAllByParameters(Long ageMin, Long ageMax
             , List<Gender> genders, List<Education> educations
             , Long sizeOfTheHometownMin, Long sizeOfTheHometownMax
-            , Long sizeOfTownMin, Long sizeOfTownMax, Long grossEarningsMin
-            , Long grossEarningsMax, List<LaborSector> laborSectors
+            , Long sizeOfTownMin, Long sizeOfTownMax, Double grossEarningsMin
+            , Double grossEarningsMax, List<LaborSector> laborSectors
             , List<MaritalStatus> maritalStatuses) {
         return personalDataRepository.findAllByParameters(ageMin,ageMax,genders,educations,sizeOfTheHometownMin
                 ,sizeOfTheHometownMax,sizeOfTownMin,sizeOfTownMax,grossEarningsMin,grossEarningsMax,laborSectors
                 ,maritalStatuses);
+    }
+
+    @Override
+    public PersonalData set(PersonalData personalData) {
+        return null;
     }
 
     @Override

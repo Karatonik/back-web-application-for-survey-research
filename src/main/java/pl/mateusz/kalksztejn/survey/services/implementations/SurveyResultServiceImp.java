@@ -1,6 +1,7 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyResult;
 import pl.mateusz.kalksztejn.survey.models.User;
@@ -11,7 +12,7 @@ import pl.mateusz.kalksztejn.survey.services.interfaces.SurveyResultService;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class SurveyResultServiceImp implements SurveyResultService {
 
     SurveyResultRepository surveyResultRepository;
@@ -30,7 +31,7 @@ public class SurveyResultServiceImp implements SurveyResultService {
         return surveyResultRepository.getById(id);
     }
 
-    @Override
+   /* @Override
     public SurveyResult getByUser(String email, Long surveyId) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if(optionalSurvey.isPresent()){
@@ -40,7 +41,7 @@ public class SurveyResultServiceImp implements SurveyResultService {
             }
         }
         return new SurveyResult();
-    }
+    }*/
 
     @Override
     public boolean delete(Long id) {
@@ -58,7 +59,7 @@ public class SurveyResultServiceImp implements SurveyResultService {
         if(optionalSurvey.isPresent()){
             try {
                 Survey survey = optionalSurvey.get();
-                List<SurveyResult> surveyResults = survey.getSurveyResults();
+                List<SurveyResult> surveyResults = survey.getResults();
                 surveyResults.add(surveyResult);
                 surveyResultRepository.save(surveyResult);
                 surveyRepository.save(survey);

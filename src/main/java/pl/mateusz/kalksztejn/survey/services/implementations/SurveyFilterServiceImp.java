@@ -28,6 +28,11 @@ public class SurveyFilterServiceImp implements SurveyFilterService {
     }
 
     @Override
+    public SurveyFilter set(SurveyFilter surveyFilter) {
+        return surveyFilterRepository.save(surveyFilter);
+    }
+
+    @Override
     public SurveyFilter set(Long ageMin, Long ageMax, List<Gender> genders, Long sizeOfTheHometownMin
             , Long sizeOfTheHometownMax, Long sizeOfTownMin, Long sizeOfTownMax, Double grossEarningsMin
             , Double grossEarningsMax, List<Education> educations, List<LaborSector> laborSectors

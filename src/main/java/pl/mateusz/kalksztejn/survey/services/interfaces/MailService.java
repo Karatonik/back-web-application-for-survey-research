@@ -9,6 +9,8 @@ public interface MailService {
 
     void sendDelete(String to) throws MessagingException;
 
+    boolean sendResetPassword(String to) throws MessagingException;
+
     void sendMail(String to, String subject, String text, boolean isHtmlContent) throws MessagingException;
 
     void sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;

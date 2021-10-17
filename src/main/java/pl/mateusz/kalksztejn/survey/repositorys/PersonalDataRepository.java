@@ -24,8 +24,8 @@ public interface PersonalDataRepository extends JpaRepository<PersonalData,Long>
             ,@Param("sizeOfTheHometownMax") Long sizeOfTheHometownMax
             ,@Param("sizeOfTownMin") Long sizeOfTownMin
             ,@Param("sizeOfTownMax") Long sizeOfTownMax
-            ,@Param("grossEarningsMin") Long grossEarningsMin
-            ,@Param("grossEarningsMax") Long grossEarningsMax
+            ,@Param("grossEarningsMin") Double grossEarningsMin
+            ,@Param("grossEarningsMax") Double grossEarningsMax
             ,@Param("laborSectors") List<LaborSector> laborSectors
             ,@Param("maritalStatuses") List<MaritalStatus> maritalStatuses);
 

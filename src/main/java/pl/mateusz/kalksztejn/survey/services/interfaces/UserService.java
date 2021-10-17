@@ -12,13 +12,13 @@ public interface UserService {
 
     boolean deleteWithKey(String key);
 
+    boolean changePassword(String key , String newPassword);
+
     User set (String email ,String password);
 
     User get(String email);
 
     boolean delete(String email);
-
-    boolean changePassword(String email ,String oldPassword ,String newPassword);
 
     List<Survey> getUserSurvey(String email);
 }

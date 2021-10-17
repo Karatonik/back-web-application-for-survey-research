@@ -19,6 +19,7 @@ public class SurveyServiceImp implements SurveyService {
 
     SurveyRepository surveyRepository;
     UserRepository userRepository;
+
     @Autowired
     public SurveyServiceImp(SurveyRepository surveyRepository, UserRepository userRepository) {
         this.surveyRepository = surveyRepository;
@@ -26,40 +27,53 @@ public class SurveyServiceImp implements SurveyService {
     }
 
     @Override
-    public Survey get(Long surveyId) {
-        return surveyRepository.findById(surveyId).orElse(new Survey());
+    public Survey get(Long surveyId, String email) {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            if (survey.getOwner().getEmail().equals(email)) {
+                return survey;
+            }
+        }
+        return new Survey();
     }
 
     @Override
     public Survey set(String name, String email) {
-        Optional<User>optionalUser = userRepository.findById(email);
+        Optional<User> optionalUser = userRepository.findById(email);
         return optionalUser.map(user -> surveyRepository.save(new Survey(name, user))).orElseGet(Survey::new);
     }
 
     @Override
-    public boolean delete(Long surveyId) {
+    public boolean delete(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if(optionalSurvey.isPresent()){
-            surveyRepository.delete(optionalSurvey.get());
-            return true;
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            if (survey.getOwner().getEmail().equals(email)) {
+                surveyRepository.delete(optionalSurvey.get());
+                return true;
+            }
         }
         return false;
     }
 
-    @Override
+    /* @Override
     public User getOwner(Long surveyId) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             return optionalSurvey.get().getOwner();
         }
         return new User();
-    }
+    }*/
 
     @Override
-    public List<SurveyResult> getSurveyResults(Long surveyId) {
+    public List<SurveyResult> getSurveyResults(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
-            return optionalSurvey.get().getSurveyResults();
+            Survey survey = optionalSurvey.get();
+            if (survey.getOwner().getEmail().equals(email)) {
+                return optionalSurvey.get().getResults();
+            }
         }
         return new ArrayList<>();
     }

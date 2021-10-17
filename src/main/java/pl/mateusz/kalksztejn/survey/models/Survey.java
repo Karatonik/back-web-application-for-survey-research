@@ -25,7 +25,7 @@ public class Survey {
     private List<Query> queries;
 
     @OneToMany(mappedBy = "survey")
-    private List<SurveyResult> surveyResults;
+    private List<SurveyResult> results;
 
     public Survey(String name, User owner) {
         this.name = name;

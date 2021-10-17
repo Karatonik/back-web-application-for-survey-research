@@ -8,7 +8,8 @@ import pl.mateusz.kalksztejn.survey.repositorys.QueryRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.QueryService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class QueryServiceImp implements QueryService {
@@ -23,16 +24,21 @@ public class QueryServiceImp implements QueryService {
     }
 
     @Override
-    public Query set(Long surveyId,Long numberOfQuery, String question, ArrayList<String>  answers
-            ,boolean checkQuery ,Long correctAnswer) {
+    public Query set(Query query) {
+        return queryRepository.save(query);
+    }
+
+    @Override
+    public Query set(Long surveyId, Long numberOfQuery, String question, ArrayList<String> answers
+            , boolean checkQuery, Long correctAnswer) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if(optionalSurvey.isPresent()){
+        if (optionalSurvey.isPresent()) {
 
             Survey survey = optionalSurvey.get();
             //todo dodaj do survey jeżeli nie pojawi się w jej liście
             //List<Query> queryList = survey.getQueries();
 
-            Query query = new Query(survey,numberOfQuery,question,answers,checkQuery,correctAnswer);
+            Query query = new Query(survey, numberOfQuery, question, answers, checkQuery, correctAnswer);
             queryRepository.save(query);
         }
         return queryRepository.save(new Query());
@@ -47,7 +53,7 @@ public class QueryServiceImp implements QueryService {
     public boolean delete(Long queryId) {
         Optional<Query> optionalQuery = queryRepository.findById(queryId);
 
-        if(optionalQuery.isPresent()){
+        if (optionalQuery.isPresent()) {
             queryRepository.delete(optionalQuery.get());
             return true;
         }

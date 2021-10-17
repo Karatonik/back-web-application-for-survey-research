@@ -21,6 +21,8 @@ public class UserDetailsImp implements UserDetails {
 
     private String email;
 
+    private Long points;
+
     @JsonIgnore
     private String password;
 
@@ -28,16 +30,17 @@ public class UserDetailsImp implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImp(String email, String password, boolean activated) {
+    public UserDetailsImp(String email,Long points, String password, boolean activated) {
         this.email = email;
         this.password = password;
+        this.points = points;
         this.authorities = new HashSet<>();
         this.activated=activated;
     }
     public static UserDetailsImp build(User user) {
 
         return new UserDetailsImp(
-                user.getEmail(),
+                user.getEmail(), user.getPoints(),
                 user.getPassword(),user.isActivated());
     }
     @Override

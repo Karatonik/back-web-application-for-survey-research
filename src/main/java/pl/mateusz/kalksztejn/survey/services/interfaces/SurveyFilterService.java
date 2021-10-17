@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface SurveyFilterService {
 
+    SurveyFilter set(SurveyFilter surveyFilter);
 
     SurveyFilter set (Long ageMin, Long ageMax, List<Gender> genders, Long sizeOfTheHometownMin
             , Long sizeOfTheHometownMax, Long sizeOfTownMin, Long sizeOfTownMax, Double grossEarningsMin

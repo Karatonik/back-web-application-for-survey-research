@@ -22,8 +22,12 @@ public class MailServiceImp implements MailService {
     UserRepository userRepository;
     @Value("${my.confMessage}")
     private String confMessage;
+    @Value("${my.resetMessage}")
+    private String resetMessage;
     @Value("${my.deleteMessage}")
     private String deleteMessage;
+    @Value("${my.invMessage}")
+    private String invMessage;
     @Autowired
     public MailServiceImp(JavaMailSender javaMailSender, UserRepository userRepository) {
         this.javaMailSender = javaMailSender;
@@ -46,6 +50,27 @@ public class MailServiceImp implements MailService {
             mimeMessageHelper.setText(confMessage + user.getUserKey(), true);
             javaMailSender.send(mimeMessage);
         }
+    }
+
+    @Override
+    public boolean sendResetPassword(String to) throws MessagingException {
+        Optional<User> optionalUser = userRepository.findById(to);
+        if (optionalUser.isPresent()) {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setTo(to);
+            mimeMessageHelper.setSubject("Reset Password");
+
+            User user = optionalUser.get();
+            user.getNewKey();
+            userRepository.save(user);
+
+
+            mimeMessageHelper.setText(resetMessage + user.getUserKey(), true);
+            javaMailSender.send(mimeMessage);
+            return true;
+        }
+        return  false;
     }
 
     @Override
@@ -83,8 +108,8 @@ public class MailServiceImp implements MailService {
         respondents.stream().parallel().forEach(respondent -> {
             try {
                 mimeMessageHelper.setTo(respondent);
-                mimeMessageHelper.setSubject("New Survey for you");//todo
-                mimeMessageHelper.setText("text", true);//todo
+                mimeMessageHelper.setSubject("New Survey waiting for you");//todo
+                mimeMessageHelper.setText(invMessage, true);
                 javaMailSender.send(mimeMessage);
             } catch (MessagingException e) {
                 e.printStackTrace();

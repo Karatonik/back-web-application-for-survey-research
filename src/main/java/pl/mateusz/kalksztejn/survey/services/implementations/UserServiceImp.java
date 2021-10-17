@@ -1,6 +1,7 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
@@ -16,12 +17,15 @@ public class UserServiceImp implements UserService {
 
     UserRepository userRepository;
     SurveyRepository surveyRepository;
+    PasswordEncoder encoder;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository) {
+    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.surveyRepository = surveyRepository;
+        this.encoder = encoder;
     }
+
 
     @Override
     public boolean confirmation(String key) {
@@ -52,6 +56,19 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public boolean changePassword(String key, String newPassword) {
+        Optional<User> optionalUser = userRepository.findByUserKey(key);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.getNewKey();
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+            return  true;
+        }
+        return false;
+    }
+
+    @Override
     public User set(String email, String password) {
         return userRepository.save(new User(email, password));
     }
@@ -71,16 +88,6 @@ public class UserServiceImp implements UserService {
         return false;
     }
 
-    @Override
-    public boolean changePassword(String email, String oldPassword, String newPassword) {
-        User user = userRepository.getById(email);
-        if (user.getPassword().equals(oldPassword)) {
-            user.setPassword(newPassword);
-            userRepository.save(user);
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public List<Survey> getUserSurvey(String email) {
