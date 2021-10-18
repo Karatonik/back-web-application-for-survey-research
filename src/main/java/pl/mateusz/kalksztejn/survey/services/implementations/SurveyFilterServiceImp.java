@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
+import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.enums.Education;
 import pl.mateusz.kalksztejn.survey.models.enums.Gender;
 import pl.mateusz.kalksztejn.survey.models.enums.LaborSector;
@@ -63,11 +64,20 @@ public class SurveyFilterServiceImp implements SurveyFilterService {
     }
 
     @Override
-    public boolean delete(Long surveyFilterId) {
+    public boolean delete(Long surveyFilterId, String email) {
         Optional<SurveyFilter> optionalSurveyFilter = surveyFilterRepository.findById(surveyFilterId);
 
         if(optionalSurveyFilter.isPresent()){
-            surveyFilterRepository.delete(optionalSurveyFilter.get());
+            SurveyFilter surveyFilter = optionalSurveyFilter.get();
+
+            Optional<Survey> optionalSurvey = surveyRepository.findById(surveyFilter.getSurvey().getId());
+            if (optionalSurvey.isPresent()){
+                Survey survey =optionalSurvey.get();
+
+                if(survey.getOwner().getEmail().equals(email)){
+                    surveyFilterRepository.delete(optionalSurveyFilter.get());
+                }
+            }
             return true;
         }
         return false;

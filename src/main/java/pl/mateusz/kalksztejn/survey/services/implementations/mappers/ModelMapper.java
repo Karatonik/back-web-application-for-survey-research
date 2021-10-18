@@ -2,11 +2,14 @@ package pl.mateusz.kalksztejn.survey.services.implementations.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mateusz.kalksztejn.survey.models.Query;
-import pl.mateusz.kalksztejn.survey.models.SurveyResult;
+import pl.mateusz.kalksztejn.survey.models.*;
+import pl.mateusz.kalksztejn.survey.models.dto.PersonalDataDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.QueryDTO;
+import pl.mateusz.kalksztejn.survey.models.dto.SurveyFilterDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyResultDTO;
 import pl.mateusz.kalksztejn.survey.repositorys.*;
+
+import java.util.Optional;
 
 @Service
 public class ModelMapper {
@@ -53,5 +56,38 @@ public class ModelMapper {
         query.setAnswers(queryDTO.getAnswers());
 
         return query;
+    }
+    public SurveyFilter surveyFilterMapper(SurveyFilterDTO surveyFilterDTO){
+        SurveyFilter surveyFilter = new SurveyFilter();
+        surveyFilter.setId(surveyFilterDTO.getId());
+        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyFilterDTO.getSurveyId());
+        optionalSurvey.ifPresent(surveyFilter::setSurvey);
+        surveyFilter.setAgeMin(surveyFilterDTO.getAgeMin());
+        surveyFilter.setAgeMax(surveyFilterDTO.getAgeMax());
+        surveyFilter.setGenders(surveyFilter.getGenders());
+        surveyFilter.setSizeOfTheHometownMin(surveyFilterDTO.getSizeOfTheHometownMin());
+        surveyFilter.setSizeOfTheHometownMax(surveyFilterDTO.getSizeOfTheHometownMax());
+        surveyFilter.setSizeOfTownMin(surveyFilterDTO.getSizeOfTownMin());
+        surveyFilter.setSizeOfTownMin(surveyFilterDTO.getSizeOfTownMax());
+        surveyFilter.setGrossEarningsMin(surveyFilterDTO.getGrossEarningsMin());
+        surveyFilter.setGrossEarningsMax(surveyFilterDTO.getGrossEarningsMax());
+        surveyFilter.setEducations(surveyFilterDTO.getEducations());
+        surveyFilter.setLaborSectors(surveyFilterDTO.getLaborSectors());
+        surveyFilter.setMaritalStatuses(surveyFilterDTO.getMaritalStatuses());
+
+        return surveyFilter;
+    }
+    public PersonalData personalDataMapper(PersonalDataDTO personalDataDTO){
+        PersonalData personalData = new PersonalData();
+        personalData.setId(personalDataDTO.getId());
+        personalData.setGender(personalDataDTO.getGender());
+        personalData.setSizeOfTheHometown(personalDataDTO.getSizeOfTheHometown());
+        personalData.setSizeOfTown(personalDataDTO.getSizeOfTown());
+        personalData.setGrossEarnings(personalDataDTO.getGrossEarnings());
+        personalData.setEducation(personalDataDTO.getEducation());
+        personalData.setLaborSector(personalDataDTO.getLaborSector());
+        personalData.setMaritalStatus(personalDataDTO.getMaritalStatus());
+
+        return personalData;
     }
 }
