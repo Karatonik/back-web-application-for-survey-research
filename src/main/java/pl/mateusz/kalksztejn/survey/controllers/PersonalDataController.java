@@ -57,7 +57,7 @@ public class PersonalDataController {
     }
 
     @GetMapping("/e/{email}")
-    public ResponseEntity<PersonalDataDTO> getByUser(@PathVariable @NotBlank String email) {
+    public ResponseEntity<PersonalDataDTO> getByUser(@PathVariable String email) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getByUser(email))
                 , HttpStatus.OK);
     }

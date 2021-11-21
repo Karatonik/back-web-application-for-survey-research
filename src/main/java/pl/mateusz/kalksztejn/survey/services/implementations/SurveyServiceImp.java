@@ -26,6 +26,9 @@ public class SurveyServiceImp implements SurveyService {
         this.userRepository = userRepository;
     }
 
+
+
+
     @Override
     public Survey get(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
@@ -40,7 +43,10 @@ public class SurveyServiceImp implements SurveyService {
 
     @Override
     public Survey set(String name, String email) {
+        System.out.println(email);
         Optional<User> optionalUser = userRepository.findById(email);
+
+
         return optionalUser.map(user -> surveyRepository.save(new Survey(name, user))).orElseGet(Survey::new);
     }
 
@@ -57,14 +63,12 @@ public class SurveyServiceImp implements SurveyService {
         return false;
     }
 
-    /* @Override
-    public User getOwner(Long surveyId) {
-        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if (optionalSurvey.isPresent()) {
-            return optionalSurvey.get().getOwner();
-        }
-        return new User();
-    }*/
+    @Override
+    public List<Survey> getAllByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findById(email);
+        List<Survey> surveys = new ArrayList<>();
+        return optionalUser.map(user -> surveyRepository.findAllByOwner(user)).orElse(surveys);
+    }
 
     @Override
     public List<SurveyResult> getSurveyResults(Long surveyId, String email) {
@@ -86,4 +90,5 @@ public class SurveyServiceImp implements SurveyService {
         }
         return new ArrayList<>();
     }
+
 }

@@ -17,6 +17,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity(name = "Person")
 public class User {
     @Id
@@ -31,9 +32,6 @@ public class User {
     @JsonIgnore
     private String userKey;
 
-    @OneToMany
-    private List<Payment> payments;
-
     @OneToMany(mappedBy = "owner")
     private List<Survey> userSurveyList;
 
@@ -46,7 +44,9 @@ public class User {
                 .toString();
         this.points = 0;
         this.userSurveyList = new ArrayList<>();
-        this.payments = new ArrayList<>();
+    }
+    public long addPoints(long points){
+        return this.points+=points;
     }
 
     @Override

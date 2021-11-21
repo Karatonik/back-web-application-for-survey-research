@@ -23,25 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping ("/{key}")
-    public ResponseEntity<Boolean> confirmation(@PathVariable @NotBlank String key) {
-        return new ResponseEntity<>(userService.confirmation(key)
-                , HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{key}")
-    public ResponseEntity<Boolean> deleteWithKey(@PathVariable @NotBlank String key) {
-        return new ResponseEntity<>(userService.deleteWithKey(key)
-                , HttpStatus.OK);
-    }
-
-    @PutMapping("/{key}/{newPassword}")
-    public ResponseEntity<Boolean> changePassword(@PathVariable @NotBlank String key
-            , @PathVariable @NotBlank String newPassword) {
-        return new ResponseEntity<>(userService.changePassword(key, newPassword)
-                , HttpStatus.OK);
-    }
-
     @GetMapping("/{email}")
     public ResponseEntity<List<SurveyDTO>> getUserSurvey(@PathVariable @NotBlank String email) {
         return new ResponseEntity<>(userService.getUserSurvey(email)

@@ -8,12 +8,6 @@ import java.util.Set;
 
 public interface UserService {
 
-    boolean confirmation(String key);
-
-    boolean deleteWithKey(String key);
-
-    boolean changePassword(String key , String newPassword);
-
     User set (String email ,String password);
 
     User get(String email);

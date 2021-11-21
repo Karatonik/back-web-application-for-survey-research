@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode
+@ToString
 public class PersonalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

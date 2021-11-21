@@ -12,6 +12,7 @@ import pl.mateusz.kalksztejn.survey.models.enums.MaritalStatus;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
+@ToString
 public class PersonalDataDTO {
 
     private Long id;
@@ -27,15 +28,18 @@ public class PersonalDataDTO {
     private String userEmail;
 
     public PersonalDataDTO(PersonalData personalData) {
-        this.id = personalData.getId();
-        this.age = personalData.getAge();
-        this.gender = personalData.getGender();
-        this.sizeOfTheHometown = personalData.getSizeOfTheHometown();
-        this.sizeOfTown = personalData.getSizeOfTown();
-        this.grossEarnings = personalData.getGrossEarnings();
-        this.education = personalData.getEducation();
-        this.laborSector = personalData.getLaborSector();
-        this.maritalStatus = personalData.getMaritalStatus();
-        this.userEmail = personalData.getUser().getEmail();
+
+            if(personalData != null) {
+                this.id = personalData.getId();
+                this.age = personalData.getAge();
+                this.gender = personalData.getGender();
+                this.sizeOfTheHometown = personalData.getSizeOfTheHometown();
+                this.sizeOfTown = personalData.getSizeOfTown();
+                this.grossEarnings = personalData.getGrossEarnings();
+                this.education = personalData.getEducation();
+                this.laborSector = personalData.getLaborSector();
+                this.maritalStatus = personalData.getMaritalStatus();
+                this.userEmail = personalData.getUser().getEmail();
+            }
     }
 }

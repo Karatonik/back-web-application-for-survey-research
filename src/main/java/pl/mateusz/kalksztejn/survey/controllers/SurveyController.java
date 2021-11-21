@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.dto.QueryDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyResultDTO;
@@ -59,5 +60,10 @@ public class SurveyController {
         return new ResponseEntity<>(surveyService.getQueries(id)
                 .stream().map(QueryDTO::new).collect(Collectors.toList())
                 , HttpStatus.OK);
+    }
+    @GetMapping("/{email}")
+    public ResponseEntity<List<SurveyDTO>> getAllByEmail(@PathVariable @NotBlank String email){
+        return  new ResponseEntity<>(surveyService.getAllByEmail(email).stream().map(SurveyDTO::new).collect(Collectors.toList())
+                ,HttpStatus.OK);
     }
 }

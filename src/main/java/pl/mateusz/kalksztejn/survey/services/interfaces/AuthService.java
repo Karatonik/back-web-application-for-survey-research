@@ -9,4 +9,12 @@ public interface AuthService {
     ResponseEntity<?> authenticate(LoginRequest loginRequest);
 
     ResponseEntity<?> register(SignUpRequest signUpRequest);
+
+    boolean sendKeyToChangePassword(String email);
+
+    boolean confirmation(String key);
+
+    boolean deleteWithKey(String key);
+
+    boolean changePassword(String key , String newPassword);
 }

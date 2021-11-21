@@ -26,48 +26,6 @@ public class UserServiceImp implements UserService {
         this.encoder = encoder;
     }
 
-
-    @Override
-    public boolean confirmation(String key) {
-        Optional<User> optionalUser = userRepository.findByUserKey(key);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setActivated(true);
-            userRepository.save(user);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteWithKey(String key) {
-        Optional<User> optionalUser = userRepository.findByUserKey(key);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            //survey
-            surveyRepository.deleteAll(surveyRepository.findAllByOwner(user));
-            //todo
-            //user
-            userRepository.delete(user);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean changePassword(String key, String newPassword) {
-        Optional<User> optionalUser = userRepository.findByUserKey(key);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.getNewKey();
-            user.setPassword(encoder.encode(newPassword));
-            userRepository.save(user);
-            return  true;
-        }
-        return false;
-    }
-
     @Override
     public User set(String email, String password) {
         return userRepository.save(new User(email, password));

@@ -13,10 +13,11 @@ public interface SurveyService {
     Survey set(String name, String email);
 
     boolean delete(Long surveyId, String email);
-    //dangerous
-    //User getOwner(Long surveyId);
+
+    List<Survey> getAllByEmail(String email);
 
     List<SurveyResult> getSurveyResults(Long surveyId, String email);
 
     List<Query> getQueries(Long surveyId);
+
 }

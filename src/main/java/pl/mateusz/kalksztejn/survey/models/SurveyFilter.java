@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode
+@ToString
 public class SurveyFilter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

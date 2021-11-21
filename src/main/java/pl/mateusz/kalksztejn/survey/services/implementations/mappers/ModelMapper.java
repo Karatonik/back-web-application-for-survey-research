@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Service
 public class ModelMapper {
-    PaymentRepository paymentRepository;
     PersonalDataRepository personalDataRepository;
     QueryRepository queryRepository;
     SurveyFilterRepository surveyFilterRepository;
@@ -22,11 +21,10 @@ public class ModelMapper {
     UserRepository userRepository;
 
     @Autowired
-    public ModelMapper(PaymentRepository paymentRepository, PersonalDataRepository personalDataRepository
+    public ModelMapper( PersonalDataRepository personalDataRepository
             , QueryRepository queryRepository, SurveyFilterRepository surveyFilterRepository
             , SurveyRepository surveyRepository, SurveyResultRepository surveyResultRepository
             , UserRepository userRepository) {
-        this.paymentRepository = paymentRepository;
         this.personalDataRepository = personalDataRepository;
         this.queryRepository = queryRepository;
         this.surveyFilterRepository = surveyFilterRepository;
@@ -59,35 +57,53 @@ public class ModelMapper {
     }
     public SurveyFilter surveyFilterMapper(SurveyFilterDTO surveyFilterDTO){
         SurveyFilter surveyFilter = new SurveyFilter();
-        surveyFilter.setId(surveyFilterDTO.getId());
+        if(surveyFilterDTO.getId() ==0){
+            surveyFilter.setId(null);
+        }else{
+            surveyFilter.setId(surveyFilterDTO.getId());
+        }
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyFilterDTO.getSurveyId());
+
         optionalSurvey.ifPresent(surveyFilter::setSurvey);
+
         surveyFilter.setAgeMin(surveyFilterDTO.getAgeMin());
         surveyFilter.setAgeMax(surveyFilterDTO.getAgeMax());
-        surveyFilter.setGenders(surveyFilter.getGenders());
+
+        surveyFilter.setGenders(surveyFilterDTO.getGenders());
+
         surveyFilter.setSizeOfTheHometownMin(surveyFilterDTO.getSizeOfTheHometownMin());
         surveyFilter.setSizeOfTheHometownMax(surveyFilterDTO.getSizeOfTheHometownMax());
+
         surveyFilter.setSizeOfTownMin(surveyFilterDTO.getSizeOfTownMin());
-        surveyFilter.setSizeOfTownMin(surveyFilterDTO.getSizeOfTownMax());
+        surveyFilter.setSizeOfTownMax(surveyFilterDTO.getSizeOfTownMax());
+
         surveyFilter.setGrossEarningsMin(surveyFilterDTO.getGrossEarningsMin());
         surveyFilter.setGrossEarningsMax(surveyFilterDTO.getGrossEarningsMax());
+
         surveyFilter.setEducations(surveyFilterDTO.getEducations());
+
         surveyFilter.setLaborSectors(surveyFilterDTO.getLaborSectors());
+
         surveyFilter.setMaritalStatuses(surveyFilterDTO.getMaritalStatuses());
 
         return surveyFilter;
     }
     public PersonalData personalDataMapper(PersonalDataDTO personalDataDTO){
         PersonalData personalData = new PersonalData();
-        personalData.setId(personalDataDTO.getId());
-        personalData.setGender(personalDataDTO.getGender());
-        personalData.setSizeOfTheHometown(personalDataDTO.getSizeOfTheHometown());
-        personalData.setSizeOfTown(personalDataDTO.getSizeOfTown());
-        personalData.setGrossEarnings(personalDataDTO.getGrossEarnings());
-        personalData.setEducation(personalDataDTO.getEducation());
-        personalData.setLaborSector(personalDataDTO.getLaborSector());
-        personalData.setMaritalStatus(personalDataDTO.getMaritalStatus());
 
+        Optional<User> optionalUser =userRepository.findById(personalDataDTO.getUserEmail());
+        if(optionalUser.isPresent()) {
+            personalData.setUser(optionalUser.get());
+            personalData.setId(personalDataDTO.getId());
+            personalData.setAge(personalDataDTO.getAge());
+            personalData.setGender(personalDataDTO.getGender());
+            personalData.setSizeOfTheHometown(personalDataDTO.getSizeOfTheHometown());
+            personalData.setSizeOfTown(personalDataDTO.getSizeOfTown());
+            personalData.setGrossEarnings(personalDataDTO.getGrossEarnings());
+            personalData.setEducation(personalDataDTO.getEducation());
+            personalData.setLaborSector(personalDataDTO.getLaborSector());
+            personalData.setMaritalStatus(personalDataDTO.getMaritalStatus());
+        }
         return personalData;
     }
 }

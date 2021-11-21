@@ -46,8 +46,9 @@ public class MailServiceImp implements MailService {
             User user = optionalUser.get();
             user.getNewKey();
             userRepository.save(user);
+            System.out.println(confMessage + user.getUserKey()+ ">Link</a>");
 
-            mimeMessageHelper.setText(confMessage + user.getUserKey(), true);
+            mimeMessageHelper.setText(confMessage + user.getUserKey()+ "\">Link</a>" , true);
             javaMailSender.send(mimeMessage);
         }
     }
@@ -60,13 +61,13 @@ public class MailServiceImp implements MailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setSubject("Reset Password");
-
+            System.out.println("send");
             User user = optionalUser.get();
             user.getNewKey();
             userRepository.save(user);
 
 
-            mimeMessageHelper.setText(resetMessage + user.getUserKey(), true);
+            mimeMessageHelper.setText(resetMessage + user.getUserKey()+ "\">Link</a>", true);
             javaMailSender.send(mimeMessage);
             return true;
         }

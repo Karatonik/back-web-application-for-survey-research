@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
+@ToString
 public class SurveyFilterDTO {
 
     private Long id;
@@ -44,6 +45,8 @@ public class SurveyFilterDTO {
         this.sizeOfTheHometownMax = surveyFilter.getSizeOfTheHometownMax();
         this.sizeOfTownMin = surveyFilter.getSizeOfTownMin();
         this.sizeOfTownMax = surveyFilter.getSizeOfTownMax();
+        this.grossEarningsMin = surveyFilter.getGrossEarningsMin();
+        this.grossEarningsMax =surveyFilter.getGrossEarningsMax();
         this.educations = surveyFilter.getEducations();
         this.laborSectors =surveyFilter.getLaborSectors();
         this.maritalStatuses = surveyFilter.getMaritalStatuses();

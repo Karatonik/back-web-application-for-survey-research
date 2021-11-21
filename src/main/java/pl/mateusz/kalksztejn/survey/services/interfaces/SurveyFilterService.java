@@ -12,13 +12,12 @@ public interface SurveyFilterService {
 
     SurveyFilter set(SurveyFilter surveyFilter);
 
-    SurveyFilter set(Long ageMin, Long ageMax, List<Gender> genders, Long sizeOfTheHometownMin
-            , Long sizeOfTheHometownMax, Long sizeOfTownMin, Long sizeOfTownMax, Double grossEarningsMin
-            , Double grossEarningsMax, List<Education> educations, List<LaborSector> laborSectors
-            , List<MaritalStatus> maritalStatuses);
-
     boolean addSurveyToFilter(Long surveyId, Long surveyFilterId);
 
+    SurveyFilter edit(SurveyFilter surveyFilter);
+
     boolean delete(Long surveyFilterId, String email);
+
+    SurveyFilter getBySurveyId(Long surveyId, String email);
 
 }

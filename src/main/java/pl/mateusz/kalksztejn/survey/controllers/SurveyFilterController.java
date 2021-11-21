@@ -31,6 +31,13 @@ public class SurveyFilterController {
                 , HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<SurveyFilterDTO> edit(@RequestBody SurveyFilterDTO surveyFilterDTO) {
+        return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService
+                .edit(modelMapper.surveyFilterMapper(surveyFilterDTO)))
+                , HttpStatus.OK);
+    }
+
     @PutMapping("/{surveyId}/{id}")
     public ResponseEntity<Boolean> addSurveyToFilter(@PathVariable @NotBlank Long surveyId
             , @PathVariable @NotBlank Long id) {
@@ -38,10 +45,15 @@ public class SurveyFilterController {
                 , HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{id}/{email}")
     public ResponseEntity<Boolean> delete(@PathVariable @NotBlank Long id
             , @PathVariable @NotBlank String email) {
         return new ResponseEntity<>(surveyFilterService.delete(id, email)
                 , HttpStatus.OK);
+    }
+    @GetMapping("{surveyId}/{email}")
+    public ResponseEntity<SurveyFilterDTO>getBySurveyId(@PathVariable @NotBlank Long surveyId ,@PathVariable @NotBlank String email){
+        return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService.getBySurveyId(surveyId,email)),HttpStatus.OK);
     }
 }

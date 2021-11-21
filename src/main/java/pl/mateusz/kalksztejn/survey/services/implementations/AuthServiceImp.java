@@ -19,6 +19,8 @@ import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.AuthService;
 import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
 
+import java.util.Optional;
+
 @Service
 public class AuthServiceImp implements AuthService {
 
@@ -44,8 +46,9 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public ResponseEntity<?> authenticate(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         //System.out.println(authentication.getName());
 
@@ -55,6 +58,10 @@ public class AuthServiceImp implements AuthService {
         UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getPoints(),userDetails.getEmail(),userDetails.isActivated()));
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return ResponseEntity.ok(new JwtResponse(null,null,null,false));
     }
 
     @Override
@@ -75,5 +82,60 @@ public class AuthServiceImp implements AuthService {
             e.printStackTrace();
         }
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @Override
+    public boolean sendKeyToChangePassword(String email) {
+        Optional<User> optionalUser = userRepository.findById(email);
+        if(optionalUser.isPresent()){
+            try {
+                mailService.sendResetPassword(optionalUser.get().getEmail());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean confirmation(String key) {
+        Optional<User> optionalUser = userRepository.findByUserKey(key);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setActivated(true);
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteWithKey(String key) {
+        Optional<User> optionalUser = userRepository.findByUserKey(key);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            //survey
+           // surveyRepository.deleteAll(surveyRepository.findAllByOwner(user));
+            //todo
+            //user
+            userRepository.delete(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean changePassword(String key, String newPassword) {
+        Optional<User> optionalUser = userRepository.findByUserKey(key);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.getNewKey();
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+            return  true;
+        }
+        return false;
     }
 }

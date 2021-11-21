@@ -3,6 +3,7 @@ package pl.mateusz.kalksztejn.survey.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -30,5 +31,7 @@ public class Survey {
     public Survey(String name, User owner) {
         this.name = name;
         this.owner = owner;
+        this.queries = new ArrayList<>();
+        this.results = new ArrayList<>();
     }
 }

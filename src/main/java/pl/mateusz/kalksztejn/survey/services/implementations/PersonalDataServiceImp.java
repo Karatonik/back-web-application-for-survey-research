@@ -52,13 +52,28 @@ public class PersonalDataServiceImp implements PersonalDataService {
 
     @Override
     public PersonalData set(PersonalData personalData) {
-        return null;
+        personalData.setId(null);
+        PersonalData optionalPersonalData = personalDataRepository.findByUser(personalData.getUser());
+        System.out.println(optionalPersonalData);
+        if(optionalPersonalData == null){
+            Optional<User>optionalUser= userRepository.findById(personalData.getUser().getEmail());
+
+            if(optionalUser.isPresent()){
+                User user =optionalUser.get();
+                user.addPoints(500);
+                userRepository.save(user);
+            }
+
+            return personalDataRepository.save(personalData);
+        }
+        return  new PersonalData();
     }
 
     @Override
     public PersonalData set(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
             , Education education, LaborSector laborSector, MaritalStatus maritalStatus, String email) {
         Optional<User> optionalUser = userRepository.findById(email);
+        System.out.println("znaleziono");
         return optionalUser.map(user -> personalDataRepository
                 .save(new PersonalData(age, gender, sizeOfTheHometown, sizeOfTown, grossEarnings
                 , education, laborSector, maritalStatus, user))).orElseGet(PersonalData::new);
