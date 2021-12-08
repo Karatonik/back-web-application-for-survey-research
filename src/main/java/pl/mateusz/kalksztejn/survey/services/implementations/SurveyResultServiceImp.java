@@ -55,17 +55,21 @@ public class SurveyResultServiceImp implements SurveyResultService {
 
     @Override
     public SurveyResult set(SurveyResult surveyResult, Long surveyId) {
+        System.out.println(surveyResult);
+        System.out.println(surveyId);
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if(optionalSurvey.isPresent()){
-            try {
                 Survey survey = optionalSurvey.get();
+                surveyResult = surveyResultRepository.save(surveyResult);
                 List<SurveyResult> surveyResults = survey.getResults();
                 surveyResults.add(surveyResult);
-                surveyResultRepository.save(surveyResult);
                 surveyRepository.save(survey);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+
+                User user = surveyResult.getUser();
+                user.setPoints(user.getPoints()+100);
+                userRepository.save(user);
+
+                return surveyResult;
         }
         return new SurveyResult();
     }

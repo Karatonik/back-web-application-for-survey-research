@@ -8,6 +8,4 @@ import pl.mateusz.kalksztejn.survey.models.User;
 
 @Repository
 public interface SurveyResultRepository extends JpaRepository<SurveyResult,Long> {
-
-    SurveyResult findAllByUserAndSurvey(User user, Survey survey);
 }

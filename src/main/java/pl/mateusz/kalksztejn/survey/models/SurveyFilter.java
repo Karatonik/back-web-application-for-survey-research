@@ -52,6 +52,7 @@ public class SurveyFilter {
     @ElementCollection(targetClass=MaritalStatus.class)
     private List<MaritalStatus> maritalStatuses;
 
+
     public SurveyFilter(Survey survey, Long ageMin, Long ageMax, List<Gender> genders, Long sizeOfTheHometownMin
             , Long sizeOfTheHometownMax, Long sizeOfTownMin, Long sizeOfTownMax, Double grossEarningsMin
             , Double grossEarningsMax, List<Education> educations, List<LaborSector> laborSectors

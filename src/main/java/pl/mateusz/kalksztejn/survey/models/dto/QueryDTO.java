@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
+@ToString
 public class QueryDTO {
 
     private Long id;
@@ -22,7 +23,7 @@ public class QueryDTO {
 
     private Long correctAnswer;
 
-    private Long surveyId;
+    private Long maxAnswer;
 
     private List<String> answers;
 
@@ -32,7 +33,7 @@ public class QueryDTO {
         this.question=query.getQuestion();
         this.checkQuery=query.isCheckQuery();
         this.correctAnswer=query.getCorrectAnswer();
-        this.surveyId=query.getSurvey().getId();
         this.answers=query.getAnswers();
+        this.maxAnswer=query.getMaxAnswer();
     }
 }

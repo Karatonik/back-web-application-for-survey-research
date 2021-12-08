@@ -13,5 +13,7 @@ public interface MailService {
 
     void sendMail(String to, String subject, String text, boolean isHtmlContent) throws MessagingException;
 
-    void sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;
+    boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;
+
+    boolean sendRewardEmail(String to) throws MessagingException;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@Entity
+@Entity(name = "Result")
 @EqualsAndHashCode
 public class SurveyResult {
     @Id
@@ -20,10 +20,8 @@ public class SurveyResult {
     @OneToOne
     private User user;
 
-    @ManyToOne
-    private Survey survey;
 
-    @Column(name="response")
-    @ElementCollection(targetClass=Long.class)
-    private List<Long> responses;
+    @Column(name="responses")
+    @ElementCollection(targetClass=String.class)
+    private List<String> responses;
 }

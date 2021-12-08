@@ -1,13 +1,12 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import pl.mateusz.kalksztejn.survey.models.Query;
-import pl.mateusz.kalksztejn.survey.models.Survey;
-import pl.mateusz.kalksztejn.survey.models.SurveyResult;
-import pl.mateusz.kalksztejn.survey.models.User;
-import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
-import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
+import pl.mateusz.kalksztejn.survey.models.*;
+import pl.mateusz.kalksztejn.survey.models.dto.SurveyDTO;
+import pl.mateusz.kalksztejn.survey.repositorys.*;
 import pl.mateusz.kalksztejn.survey.services.interfaces.SurveyService;
 
 import java.util.ArrayList;
@@ -19,12 +18,26 @@ public class SurveyServiceImp implements SurveyService {
 
     SurveyRepository surveyRepository;
     UserRepository userRepository;
+    QueryRepository queryRepository;
+    SurveyFilterRepository surveyFilterRepository;
+    PersonalDataRepository personalDataRepository;
+    SurveyResultRepository surveyResultRepository;
 
     @Autowired
-    public SurveyServiceImp(SurveyRepository surveyRepository, UserRepository userRepository) {
+    public SurveyServiceImp(SurveyRepository surveyRepository, UserRepository userRepository, QueryRepository queryRepository,
+                            SurveyFilterRepository surveyFilterRepository,PersonalDataRepository personalDataRepository
+                            ,SurveyResultRepository surveyResultRepository) {
         this.surveyRepository = surveyRepository;
         this.userRepository = userRepository;
+        this.queryRepository = queryRepository;
+        this.surveyFilterRepository=surveyFilterRepository;
+        this.personalDataRepository = personalDataRepository;
+        this.surveyResultRepository = surveyResultRepository;
+
     }
+
+
+
 
 
 
@@ -56,7 +69,15 @@ public class SurveyServiceImp implements SurveyService {
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();
             if (survey.getOwner().getEmail().equals(email)) {
-                surveyRepository.delete(optionalSurvey.get());
+
+                Optional<SurveyFilter>optionalSurveyFilter = surveyFilterRepository.findBySurvey(survey);
+                optionalSurveyFilter.ifPresent(surveyFilter -> surveyFilterRepository.delete(surveyFilter));
+
+                surveyResultRepository.deleteAll(survey.getResults());
+
+                queryRepository.deleteAll(survey.getQueries());
+
+                surveyRepository.delete(survey);
                 return true;
             }
         }
@@ -81,6 +102,25 @@ public class SurveyServiceImp implements SurveyService {
         }
         return new ArrayList<>();
     }
+    @Modifying
+    @Override
+    public List<Query> setQueries(String email, Long surveyId, List<Query> queryList) {
+
+        List<Query> queriesEmpty = new ArrayList<>();
+        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+
+            if (survey.getOwner().getEmail().equals(email)) {
+                queryList = queryRepository.saveAll(queryList);
+                survey.setQueries(queryList);
+                survey = surveyRepository.save(survey);
+                return survey.getQueries();
+            }
+
+        }
+        return queriesEmpty;
+    }
 
     @Override
     public List<Query> getQueries(Long surveyId) {
@@ -91,4 +131,39 @@ public class SurveyServiceImp implements SurveyService {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<User> getRespondentsList(String email, Long surveyId) {
+        Optional<Survey> optionalSurvey =surveyRepository.findById(surveyId);
+        if(optionalSurvey.isPresent()){
+            Survey survey = optionalSurvey.get();
+            if(survey.getOwner().getEmail().equals(email)){
+            Optional<SurveyFilter> optionalSurveyFilter= surveyFilterRepository.findBySurvey(survey);
+            if(optionalSurveyFilter.isPresent()){
+                SurveyFilter surveyFilter = optionalSurveyFilter.get();
+             return   personalDataRepository.findAllByParameters(surveyFilter.getAgeMin(),surveyFilter.getAgeMax()
+                        ,surveyFilter.getGenders(),surveyFilter.getEducations(),surveyFilter.getSizeOfTheHometownMin()
+                        ,surveyFilter.getSizeOfTheHometownMax(),surveyFilter.getSizeOfTownMin(),surveyFilter.getSizeOfTownMax()
+                        ,surveyFilter.getGrossEarningsMin(),surveyFilter.getGrossEarningsMax(),surveyFilter.getLaborSectors()
+                        ,surveyFilter.getMaritalStatuses());
+            }
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Query> getRespQueries(Long pId, Long sId, String email) {
+        Optional<PersonalData> optionalPersonalData = personalDataRepository.findById(pId);
+        if(optionalPersonalData.isPresent()){
+            PersonalData personalData= optionalPersonalData.get();
+            Optional<Survey> optionalSurvey = surveyRepository.findById(sId);
+            if(optionalSurvey.isPresent() &&personalData.getUser().getEmail().equals(email) ){
+                Survey survey = optionalSurvey.get();
+               if(survey.getResults().stream().noneMatch(r ->r.getUser() == personalData.getUser())){
+                   return survey.getQueries();
+               }
+            }
+        }
+        return new ArrayList<>();
+    }
 }

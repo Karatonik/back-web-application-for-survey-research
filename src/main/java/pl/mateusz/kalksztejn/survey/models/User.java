@@ -48,6 +48,9 @@ public class User {
     public long addPoints(long points){
         return this.points+=points;
     }
+    public long subtractPoints(long points){
+        return this.points-=points;
+    }
 
     @Override
     public int hashCode() {

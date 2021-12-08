@@ -35,8 +35,7 @@ public class ModelMapper {
 
     public SurveyResult surveyResultMapper(SurveyResultDTO resultDTO) {
         SurveyResult result = new SurveyResult();
-        result.setId(result.getId());
-        result.setSurvey(surveyRepository.getById(resultDTO.getSurveyId()));
+        result.setId(resultDTO.getId());
         result.setUser(userRepository.getById(resultDTO.getUserEmail()));
         result.setResponses(resultDTO.getResponses());
 
@@ -45,13 +44,19 @@ public class ModelMapper {
 
     public Query queryMapper(QueryDTO queryDTO) {
         Query query = new Query();
+
+        if(queryDTO.getId() == 0){
+            query.setId(null);
+        }else{
+            query.setId(queryDTO.getId());
+        }
         query.setId(queryDTO.getId());
         query.setNumberOfQuery(queryDTO.getNumberOfQuery());
         query.setQuestion(queryDTO.getQuestion());
         query.setCheckQuery(queryDTO.isCheckQuery());
         query.setCorrectAnswer(queryDTO.getCorrectAnswer());
-        query.setSurvey(surveyRepository.getById(queryDTO.getSurveyId()));
         query.setAnswers(queryDTO.getAnswers());
+        query.setMaxAnswer(queryDTO.getMaxAnswer());
 
         return query;
     }

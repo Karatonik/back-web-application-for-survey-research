@@ -28,6 +28,10 @@ public class MailServiceImp implements MailService {
     private String deleteMessage;
     @Value("${my.invMessage}")
     private String invMessage;
+    @Value("${my.rewardMessage}")
+    private String rewardMessage;
+    @Value("${reward.mail}")
+    private  long rewardMailPoints;
     @Autowired
     public MailServiceImp(JavaMailSender javaMailSender, UserRepository userRepository) {
         this.javaMailSender = javaMailSender;
@@ -103,9 +107,10 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public void sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException {
+    public boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        System.out.println(respondents);
         respondents.stream().parallel().forEach(respondent -> {
             try {
                 mimeMessageHelper.setTo(respondent);
@@ -113,8 +118,35 @@ public class MailServiceImp implements MailService {
                 mimeMessageHelper.setText(invMessage, true);
                 javaMailSender.send(mimeMessage);
             } catch (MessagingException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         });
+        return true;
+    }
+
+    @Override
+    public boolean sendRewardEmail(String to) throws MessagingException {
+
+        Optional<User> optionalUser = userRepository.findById(to);
+        if(optionalUser.isPresent()){
+
+            User user = optionalUser.get();
+            if(user.getPoints()>=rewardMailPoints) {
+                user.subtractPoints(rewardMailPoints);
+                userRepository.save(user);
+
+                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setTo(to);
+                mimeMessageHelper.setSubject("Thank-you mail form Survey-Research");
+                mimeMessageHelper.setText(rewardMessage, false);
+                javaMailSender.send(mimeMessage);
+
+
+                return true;
+            }
+        }
+
+        return  false;
     }
 }

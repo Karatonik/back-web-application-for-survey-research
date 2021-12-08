@@ -28,21 +28,6 @@ public class QueryServiceImp implements QueryService {
         return queryRepository.save(query);
     }
 
-    @Override
-    public Query set(Long surveyId, Long numberOfQuery, String question, ArrayList<String> answers
-            , boolean checkQuery, Long correctAnswer) {
-        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if (optionalSurvey.isPresent()) {
-
-            Survey survey = optionalSurvey.get();
-            //todo dodaj do survey jeżeli nie pojawi się w jej liście
-            //List<Query> queryList = survey.getQueries();
-
-            Query query = new Query(survey, numberOfQuery, question, answers, checkQuery, correctAnswer);
-            queryRepository.save(query);
-        }
-        return queryRepository.save(new Query());
-    }
 
     @Override
     public Query get(Long queryId) {

@@ -31,12 +31,12 @@ public class SurveyDTO {
             this.id = survey.getId();
             this.name = survey.getName();
             this.ownerEmail = survey.getOwner().getEmail();
-            this.queriesIds = survey.getQueries().stream()
+           this.queriesIds = survey.getQueries().stream()
                     .map(Query::getId).collect(Collectors.toList());
             this.resultsIds = survey.getResults().stream()
                     .map(SurveyResult::getId).collect(Collectors.toList());
         }else {
-            this.queriesIds = new ArrayList<>();
+           this.queriesIds = new ArrayList<>();
             this.resultsIds = new ArrayList<>();
         }
 

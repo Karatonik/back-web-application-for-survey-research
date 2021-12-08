@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.mateusz.kalksztejn.survey.models.PersonalData;
+import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
 import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.enums.Education;
 import pl.mateusz.kalksztejn.survey.models.enums.Gender;

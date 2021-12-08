@@ -22,10 +22,12 @@ public class Survey {
    @ManyToOne
    private User owner;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany
+    @JoinColumn(name = "Query")
     private List<Query> queries;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany
+    @JoinColumn(name = "Result")
     private List<SurveyResult> results;
 
     public Survey(String name, User owner) {

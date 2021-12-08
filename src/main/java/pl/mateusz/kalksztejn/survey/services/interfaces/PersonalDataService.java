@@ -7,7 +7,7 @@ import pl.mateusz.kalksztejn.survey.models.enums.Education;
 import pl.mateusz.kalksztejn.survey.models.enums.Gender;
 import pl.mateusz.kalksztejn.survey.models.enums.LaborSector;
 import pl.mateusz.kalksztejn.survey.models.enums.MaritalStatus;
-import pl.mateusz.kalksztejn.survey.repositorys.PersonalDataRepository;
+import pl.mateusz.kalksztejn.survey.models.payload.response.SurveyInfo;
 
 import java.util.List;
 
@@ -29,4 +29,6 @@ public interface PersonalDataService {
     PersonalData get(Long personalDataId);
 
     PersonalData getByUser(String email);
+
+    List<SurveyInfo> getSurveys(Long pId, String email);
 }

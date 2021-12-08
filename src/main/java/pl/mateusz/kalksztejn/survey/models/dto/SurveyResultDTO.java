@@ -14,17 +14,14 @@ public class SurveyResultDTO {
 
     private Long id;
 
-    private String userEmail;
+    private String userEmail;//chyba niebezpieczne
 
-    private Long surveyId;
-
-    private List<Long> responses;
+    private List<String> responses;
 
 
     public SurveyResultDTO(SurveyResult surveyResult) {
         this.id = surveyResult.getId();
         this.userEmail = surveyResult.getUser().getEmail();
-        this.surveyId = surveyResult.getSurvey().getId();
         this.responses= surveyResult.getResponses();
     }
 }
