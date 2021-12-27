@@ -31,7 +31,7 @@ public class AuthController {
         return authenticationManager.register(signUpRequest);
     }
     @PutMapping("sk")
-    public ResponseEntity<Boolean> sendKeyToChangePassword(@RequestBody String email){
+    public ResponseEntity<Boolean> sendKey(@RequestBody String email){
         return new ResponseEntity<>(authenticationManager.sendKeyToChangePassword(email),HttpStatus.OK);
     }
 
@@ -47,10 +47,10 @@ public class AuthController {
                 , HttpStatus.OK);
     }
 
-    @PutMapping("/{key}/{newPassword}")
+    @PutMapping("/{key}/{nPass}")
     public ResponseEntity<Boolean> changePassword(@PathVariable @NotBlank String key
-            , @PathVariable @NotBlank String newPassword) {
-        return new ResponseEntity<>(authenticationManager.changePassword(key, newPassword)
+            , @PathVariable @NotBlank String nPass) {
+        return new ResponseEntity<>(authenticationManager.changePassword(key, nPass)
                 , HttpStatus.OK);
     }
 }

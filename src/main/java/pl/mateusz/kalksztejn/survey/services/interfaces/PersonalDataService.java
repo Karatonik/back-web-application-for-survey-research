@@ -23,6 +23,8 @@ public interface PersonalDataService {
 
     PersonalData set(PersonalData personalData);
 
+    PersonalData edit(PersonalData personalData);
+
     PersonalData set(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
             , Education education, LaborSector laborSector, MaritalStatus maritalStatus, String email);
 

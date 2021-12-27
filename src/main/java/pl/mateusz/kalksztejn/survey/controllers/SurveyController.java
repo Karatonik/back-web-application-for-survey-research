@@ -1,20 +1,21 @@
 package pl.mateusz.kalksztejn.survey.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mateusz.kalksztejn.survey.models.Survey;
+import pl.mateusz.kalksztejn.survey.models.dto.ResultDTO;
 import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.dto.QueryDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyDTO;
-import pl.mateusz.kalksztejn.survey.models.dto.SurveyResultDTO;
 import pl.mateusz.kalksztejn.survey.services.implementations.mappers.ModelMapper;
 import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
 import pl.mateusz.kalksztejn.survey.services.interfaces.SurveyService;
 
 import javax.mail.MessagingException;
 import javax.validation.constraints.NotBlank;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,10 +57,9 @@ public class SurveyController {
     }
 
     @GetMapping("/res/{id}/{email}")
-    public ResponseEntity<List<SurveyResultDTO>> getResults(@PathVariable @NotBlank Long id
+    public ResponseEntity<List<List<ResultDTO>>> getResults(@PathVariable @NotBlank Long id
             , @PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(surveyService.getSurveyResults(id, email)
-                .stream().map(SurveyResultDTO::new).collect(Collectors.toList())
+        return new ResponseEntity<>((surveyService.getSurveyResults(id, email))
                 , HttpStatus.OK);
     }
 
@@ -93,5 +93,9 @@ public class SurveyController {
     public ResponseEntity<List<QueryDTO>> getRespQueries(@PathVariable @NotBlank Long pId,@PathVariable @NotBlank Long sId,@PathVariable @NotBlank String email ){
         return new ResponseEntity<>(surveyService.getRespQueries(pId, sId, email)
                 .stream().map(QueryDTO::new).collect(Collectors.toList()), HttpStatus.OK);
+    }
+    @GetMapping(value = "report/{Id}/{email}", produces = "text/csv")
+    public ResponseEntity<Resource> getCSV(@PathVariable @NotBlank Long Id,@PathVariable @NotBlank String email) throws IOException {
+        return surveyService.getCSV(Id, email);
     }
 }

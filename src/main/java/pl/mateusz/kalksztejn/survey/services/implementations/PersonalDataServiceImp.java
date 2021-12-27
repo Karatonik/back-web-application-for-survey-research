@@ -1,6 +1,7 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.PersonalData;
 import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
@@ -77,10 +78,19 @@ public class PersonalDataServiceImp implements PersonalDataService {
     }
 
     @Override
+    @Modifying
+    public PersonalData edit(PersonalData personalData) {
+        Optional<User>optionalUser = userRepository.findById(personalData.getUser().getEmail());
+        if(optionalUser.isPresent()){
+            return  personalDataRepository.save(personalData);
+        }
+        return new PersonalData();
+    }
+
+    @Override
     public PersonalData set(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
             , Education education, LaborSector laborSector, MaritalStatus maritalStatus, String email) {
         Optional<User> optionalUser = userRepository.findById(email);
-        System.out.println("znaleziono");
         return optionalUser.map(user -> personalDataRepository
                 .save(new PersonalData(age, gender, sizeOfTheHometown, sizeOfTown, grossEarnings
                         , education, laborSector, maritalStatus, user))).orElseGet(PersonalData::new);
@@ -91,6 +101,7 @@ public class PersonalDataServiceImp implements PersonalDataService {
         Optional<PersonalData> optionalPersonalData = personalDataRepository.findById(personalDataId);
         return optionalPersonalData.orElseGet(PersonalData::new);
     }
+
 
     @Override
     public PersonalData getByUser(String email) {
@@ -109,6 +120,7 @@ public class PersonalDataServiceImp implements PersonalDataService {
             if (personalData.getUser().getEmail().equals(email)) {
                 List<SurveyFilter> surveyFilters = surveyFilterRepository.findAll();
                 return surveyFilters.stream().parallel()
+                        .filter(f->f.getSurvey().getOwner() != personalData.getUser())
                         .filter(f-> f.getSurvey().getResults().stream().parallel().noneMatch(r->r.getUser() == personalData.getUser()))
                         .filter(f -> f.getAgeMin() < personalData.getAge() && f.getAgeMax() > personalData.getAge())
                         .filter(f -> f.getGrossEarningsMin() < personalData.getGrossEarnings() && f.getGrossEarningsMax() > personalData.getGrossEarnings())

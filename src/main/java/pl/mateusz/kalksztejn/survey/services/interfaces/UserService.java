@@ -2,6 +2,7 @@ package pl.mateusz.kalksztejn.survey.services.interfaces;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import pl.mateusz.kalksztejn.survey.models.Award;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
 
@@ -12,9 +13,9 @@ import java.util.Set;
 
 public interface UserService {
 
-    User set (String email ,String password);
-
     User get(String email);
+
+    User set(String email, String password);
 
     boolean delete(String email);
 
@@ -23,4 +24,6 @@ public interface UserService {
     Long getPoints(String email);
 
     ResponseEntity<Resource> getMascot(String email) throws IOException;
+
+    List<Award> getUserAwards(String email);
 }

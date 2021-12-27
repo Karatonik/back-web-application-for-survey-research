@@ -35,6 +35,9 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<Survey> userSurveyList;
 
+    @OneToMany
+    private List<Award> awards;
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
@@ -62,4 +65,10 @@ public class User {
                 .hashString(String.valueOf(hashCode()), StandardCharsets.UTF_8)
                 .toString();
     }
+
+    public boolean addAward(Award award){
+     return awards.add(award);
+    }
+
+
 }

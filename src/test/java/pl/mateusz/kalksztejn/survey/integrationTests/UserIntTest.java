@@ -36,12 +36,12 @@ public class UserIntTest {
         assertEquals(userService.get(user.getEmail()).getEmail(),user.getEmail());
     }
     @Test
-    public void deleteTest() throws Exception{
+    public void deleteTest(){
         user = userService.set(user.getEmail(), user.getPassword());
         assertTrue(userService.delete(user.getEmail()));
     }
     @Test
-    public void getPointsTest() throws Exception{
+    public void getPointsTest(){
         user = userService.set(user.getEmail(), user.getPassword());
         Long points = userService.getPoints(user.getEmail());
         assertEquals(points.toString(),"0");

@@ -17,7 +17,11 @@ import java.util.List;
 @Repository
 public interface PersonalDataRepository extends JpaRepository<PersonalData,Long> {
 
-    @Query("SELECT p.user FROM PersonalData AS p WHERE p.age BETWEEN :ageMin AND :ageMax AND p.gender IN (:genders)AND p.education IN (:educations) AND p.sizeOfTheHometown BETWEEN :sizeOfTheHometownMin AND :sizeOfTheHometownMax AND p.sizeOfTown BETWEEN :sizeOfTownMin AND :sizeOfTownMax AND p.grossEarnings BETWEEN :grossEarningsMin AND :grossEarningsMax AND p.laborSector IN(:laborSectors) AND p.maritalStatus IN (:maritalStatuses)")
+    @Query("SELECT p.user FROM PersonalData AS p WHERE p.age BETWEEN :ageMin AND :ageMax " +
+            "AND p.gender IN (:genders)AND p.education IN (:educations) AND p.sizeOfTheHometown BETWEEN " +
+            ":sizeOfTheHometownMin AND :sizeOfTheHometownMax AND p.sizeOfTown BETWEEN :sizeOfTownMin AND " +
+            ":sizeOfTownMax AND p.grossEarnings BETWEEN :grossEarningsMin AND :grossEarningsMax AND" +
+            " p.laborSector IN(:laborSectors) AND p.maritalStatus IN (:maritalStatuses)")
     List<User> findAllByParameters(@Param("ageMin")Long ageMin,@Param("ageMax") Long ageMax
             ,@Param("genders") List<Gender> genders
             ,@Param("educations") List<Education> educations

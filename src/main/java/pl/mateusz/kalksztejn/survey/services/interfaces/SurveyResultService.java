@@ -6,9 +6,6 @@ public interface SurveyResultService {
 
     SurveyResult get(Long Id);
 
-    //dangerous
-    //SurveyResult getByUser(String email ,Long surveyId);
-
     boolean delete(Long Id);
 
     SurveyResult set(SurveyResult surveyResult, Long surveyId);

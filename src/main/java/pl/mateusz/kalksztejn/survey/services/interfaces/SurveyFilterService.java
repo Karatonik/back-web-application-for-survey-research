@@ -12,11 +12,11 @@ public interface SurveyFilterService {
 
     SurveyFilter set(SurveyFilter surveyFilter);
 
-    boolean addSurveyToFilter(Long surveyId, Long surveyFilterId);
+    boolean addSurveyToFilter(Long surveyId, Long Id);
 
     SurveyFilter edit(SurveyFilter surveyFilter);
 
-    boolean delete(Long surveyFilterId, String email);
+    boolean delete(Long Id, String email);
 
     SurveyFilter getBySurveyId(Long surveyId, String email);
 

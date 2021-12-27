@@ -11,7 +11,7 @@ public interface QueryService {
 
     Query set(Query query);
 
-    Query get(Long queryId);
+    Query get(Long Id);
 
-    boolean delete(Long queryId);
+    boolean delete(Long Id);
 }

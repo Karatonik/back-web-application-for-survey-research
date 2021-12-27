@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.mateusz.kalksztejn.survey.models.Award;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
+import pl.mateusz.kalksztejn.survey.repositorys.AwardRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.UserService;
@@ -23,6 +25,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +34,7 @@ public class UserServiceImp implements UserService {
 
     UserRepository userRepository;
     SurveyRepository surveyRepository;
+    AwardRepository awardRepository;
     PasswordEncoder encoder;
 
 
@@ -40,20 +44,23 @@ public class UserServiceImp implements UserService {
     private String path;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository, PasswordEncoder encoder) {
+    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository,AwardRepository awardRepository
+            , PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.surveyRepository = surveyRepository;
+        this.awardRepository =awardRepository;
         this.encoder = encoder;
     }
 
-    @Override
-    public User set(String email, String password) {
-        return userRepository.save(new User(email, password));
-    }
 
     @Override
     public User get(String email) {
         return userRepository.getById(email);
+    }
+
+    @Override
+    public User set(String email, String password) {
+        return userRepository.save(new User(email,password));
     }
 
     @Override
@@ -84,6 +91,9 @@ public class UserServiceImp implements UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getPoints() > rewardMascotPoints) {
+
+                Award award = awardRepository.save( new Award("Mascot",1000000L));
+                user.addAward(award);
                 user.subtractPoints(rewardMascotPoints);
                 userRepository.save(user);
                 final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
@@ -99,5 +109,11 @@ public class UserServiceImp implements UserService {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(null);
+    }
+
+    @Override
+    public List<Award> getUserAwards(String email) {
+        Optional<User> optionalUser = userRepository.findById(email);
+        return optionalUser.map(User::getAwards).orElseGet(ArrayList::new);
     }
 }

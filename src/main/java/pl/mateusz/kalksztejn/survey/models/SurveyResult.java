@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "Result")
 @EqualsAndHashCode
+@ToString
 public class SurveyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

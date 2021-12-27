@@ -36,6 +36,14 @@ public class PersonalDataController {
                 .set(modelMapper.personalDataMapper(personalDataDTO)))
                 , HttpStatus.OK);
     }
+    @PutMapping
+    public ResponseEntity<PersonalDataDTO> edit (@RequestBody PersonalDataDTO personalDataDTO) {
+        return new ResponseEntity<>(new PersonalDataDTO(personalDataService
+                .edit(modelMapper.personalDataMapper(personalDataDTO)))
+                , HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<PersonalDataDTO> get(@PathVariable @NotBlank Long id) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService.get(id))

@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import pl.mateusz.kalksztejn.survey.models.Award;
+import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
+import pl.mateusz.kalksztejn.survey.repositorys.AwardRepository;
+import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
 
@@ -20,6 +24,9 @@ public class MailServiceImp implements MailService {
     JavaMailSender javaMailSender;
 
     UserRepository userRepository;
+    AwardRepository awardRepository;
+
+    SurveyRepository surveyRepository;
     @Value("${my.confMessage}")
     private String confMessage;
     @Value("${my.resetMessage}")
@@ -33,9 +40,12 @@ public class MailServiceImp implements MailService {
     @Value("${reward.mail}")
     private  long rewardMailPoints;
     @Autowired
-    public MailServiceImp(JavaMailSender javaMailSender, UserRepository userRepository) {
+    public MailServiceImp(JavaMailSender javaMailSender, UserRepository userRepository,AwardRepository awardRepository,
+                          SurveyRepository surveyRepository) {
         this.javaMailSender = javaMailSender;
         this.userRepository = userRepository;
+        this.surveyRepository =surveyRepository;
+        this.awardRepository = awardRepository;
     }
 
     @Override
@@ -108,20 +118,25 @@ public class MailServiceImp implements MailService {
 
     @Override
     public boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
+        if(optionalSurvey.isPresent()){
+            Survey survey = optionalSurvey.get();
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        System.out.println(respondents);
         respondents.stream().parallel().forEach(respondent -> {
             try {
                 mimeMessageHelper.setTo(respondent);
-                mimeMessageHelper.setSubject("New Survey waiting for you");//todo
-                mimeMessageHelper.setText(invMessage, true);
+                mimeMessageHelper.setSubject("New Survey waiting for you");
+                mimeMessageHelper.setText(invMessage+ survey.getName(), true);
                 javaMailSender.send(mimeMessage);
             } catch (MessagingException e) {
                 System.out.println(e.getMessage());
             }
         });
         return true;
+        }
+        return  false;
     }
 
     @Override
@@ -132,6 +147,10 @@ public class MailServiceImp implements MailService {
 
             User user = optionalUser.get();
             if(user.getPoints()>=rewardMailPoints) {
+
+                Award award = awardRepository.save( new Award("RewardEmail",1000L));
+                user.addAward(award);
+
                 user.subtractPoints(rewardMailPoints);
                 userRepository.save(user);
 
