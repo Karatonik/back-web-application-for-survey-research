@@ -21,16 +21,16 @@ public interface PersonalDataService {
             ,Double grossEarningsMin ,Double grossEarningsMax
             ,List<LaborSector> laborSectors ,List<MaritalStatus> maritalStatuses);
 
-    PersonalData set(PersonalData personalData);
+    PersonalData setPersonalData(PersonalData personalData);
 
-    PersonalData edit(PersonalData personalData);
+    PersonalData editPersonalData(PersonalData personalData);
 
-    PersonalData set(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
+    PersonalData setPersonalData(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
             , Education education, LaborSector laborSector, MaritalStatus maritalStatus, String email);
 
-    PersonalData get(Long personalDataId);
+    PersonalData getPersonalData(Long personalDataId);
 
-    PersonalData getByUser(String email);
+    PersonalData getPersonalDataByUser(String email);
 
     List<SurveyInfo> getSurveys(Long pId, String email);
 }

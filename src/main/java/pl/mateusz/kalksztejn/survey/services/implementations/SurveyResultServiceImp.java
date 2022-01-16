@@ -12,12 +12,14 @@ import pl.mateusz.kalksztejn.survey.services.interfaces.SurveyResultService;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class SurveyResultServiceImp implements SurveyResultService {
 
     SurveyResultRepository surveyResultRepository;
     SurveyRepository surveyRepository;
     UserRepository userRepository;
+
     @Autowired
     public SurveyResultServiceImp(SurveyResultRepository surveyResultRepository
             , SurveyRepository surveyRepository, UserRepository userRepository) {
@@ -27,26 +29,14 @@ public class SurveyResultServiceImp implements SurveyResultService {
     }
 
     @Override
-    public SurveyResult get(Long id) {
+    public SurveyResult getSurveyResult(Long id) {
         return surveyResultRepository.getById(id);
     }
 
-   /* @Override
-    public SurveyResult getByUser(String email, Long surveyId) {
-        Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if(optionalSurvey.isPresent()){
-            Optional<User> optionalUser = userRepository.findById(email);
-            if(optionalUser.isPresent()){
-                return surveyResultRepository.findAllByUserAndSurvey(optionalUser.get(),optionalSurvey.get());
-            }
-        }
-        return new SurveyResult();
-    }*/
-
     @Override
-    public boolean delete(Long id) {
+    public boolean deleteSurveyResult(Long id) {
         Optional<SurveyResult> optionalSurveyResult = surveyResultRepository.findById(id);
-        if(optionalSurveyResult.isPresent()){
+        if (optionalSurveyResult.isPresent()) {
             surveyResultRepository.delete(optionalSurveyResult.get());
             return true;
         }
@@ -54,22 +44,22 @@ public class SurveyResultServiceImp implements SurveyResultService {
     }
 
     @Override
-    public SurveyResult set(SurveyResult surveyResult, Long surveyId) {
+    public SurveyResult setSurveyResult(SurveyResult surveyResult, Long surveyId) {
         System.out.println(surveyResult);
         System.out.println(surveyId);
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if(optionalSurvey.isPresent()){
-                Survey survey = optionalSurvey.get();
-                surveyResult = surveyResultRepository.save(surveyResult);
-                List<SurveyResult> surveyResults = survey.getResults();
-                surveyResults.add(surveyResult);
-                surveyRepository.save(survey);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            surveyResult = surveyResultRepository.save(surveyResult);
+            List<SurveyResult> surveyResults = survey.getResults();
+            surveyResults.add(surveyResult);
+            surveyRepository.save(survey);
 
-                User user = surveyResult.getUser();
-                user.setPoints(user.getPoints()+100);
-                userRepository.save(user);
+            User user = surveyResult.getUser();
+            user.setPoints(user.getPoints() + 100);
+            userRepository.save(user);
 
-                return surveyResult;
+            return surveyResult;
         }
         return new SurveyResult();
     }

@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SurveyApplication.class)
-@AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrations.properties")
 public class SurveyFilterIntTest {
@@ -47,29 +46,29 @@ public class SurveyFilterIntTest {
 
     @Before
     public void init() {
-        user = userService.set(user.getEmail(), user.getPassword());
-        survey = surveyService.set(survey.getName(), user.getEmail());
+        user = userService.setUser(user.getEmail(), user.getPassword());
+        survey = surveyService.setSurvey(survey.getName(), user.getEmail());
         surveyFilter.setSurvey(survey);
     }
 
 
     @Test
     public void setTest() {
-        assertEquals(surveyFilterService.set(surveyFilter).getAgeMax(), surveyFilter.getAgeMax());
+        assertEquals(surveyFilterService.setSurveyFilter(surveyFilter).getAgeMax(), surveyFilter.getAgeMax());
     }
 
     @Test
     public void editTest() {
-        surveyFilter = surveyFilterService.set(surveyFilter);
+        surveyFilter = surveyFilterService.setSurveyFilter(surveyFilter);
         surveyFilter.setAgeMax(22L);
 
-        assertEquals(surveyFilterService.edit(surveyFilter).getAgeMax(), surveyFilter.getAgeMax());
+        assertEquals(surveyFilterService.editSurveyFilter(surveyFilter).getAgeMax(), surveyFilter.getAgeMax());
 
     }
 
     @Test
-    public void deleteTest() throws Exception {
-        surveyFilter = surveyFilterService.set(surveyFilter);
-        assertTrue(surveyFilterService.delete(surveyFilter.getId(), user.getEmail()));
+    public void deleteTest()  {
+        surveyFilter = surveyFilterService.setSurveyFilter(surveyFilter);
+        assertTrue(surveyFilterService.deleteSurveyFilter(surveyFilter.getId(), user.getEmail()));
     }
 }

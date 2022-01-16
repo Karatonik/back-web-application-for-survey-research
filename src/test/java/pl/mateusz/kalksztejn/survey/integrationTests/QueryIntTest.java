@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SurveyApplication.class)
-@AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrations.properties")
 public class QueryIntTest {
@@ -34,19 +33,20 @@ public class QueryIntTest {
     private QueryService queryService;
 
     Query query = new Query(1L,1L,"TEST",false,0L,1L,new ArrayList<>());
+    @Test
     public void setTest(){
-        assertEquals(queryService.set(query).getQuestion(),query.getQuestion());
+        assertEquals(queryService.setQuery(query).getQuestion(),query.getQuestion());
     }
     @Test
     public void getTest(){
-       query= queryService.set(query);
-       Query query1 =queryService.get(query.getId());
+       query= queryService.setQuery(query);
+       Query query1 =queryService.getQuery(query.getId());
         assertEquals(query1.getId(),query.getId());
     }
     @Test
-    public void delete(){
-        query= queryService.set(query);
-        assertTrue(queryService.delete(query.getId()));
+    public void deleteTest(){
+        query= queryService.setQuery(query);
+        assertTrue(queryService.deleteQuery(query.getId()));
     }
 
 

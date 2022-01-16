@@ -13,15 +13,15 @@ import java.util.Set;
 
 public interface UserService {
 
-    User get(String email);
+    User getUser(String email);
 
-    User set(String email, String password);
+    User setUser(String email, String password);
 
-    boolean delete(String email);
+    boolean deleteUser(String email);
 
     List<Survey> getUserSurvey(String email);
 
-    Long getPoints(String email);
+    Long getUserPoints(String email);
 
     ResponseEntity<Resource> getMascot(String email) throws IOException;
 

@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface SurveyFilterService {
 
-    SurveyFilter set(SurveyFilter surveyFilter);
+    SurveyFilter setSurveyFilter(SurveyFilter surveyFilter);
 
     boolean addSurveyToFilter(Long surveyId, Long Id);
 
-    SurveyFilter edit(SurveyFilter surveyFilter);
+    SurveyFilter editSurveyFilter(SurveyFilter surveyFilter);
 
-    boolean delete(Long Id, String email);
+    boolean deleteSurveyFilter(Long Id, String email);
 
     SurveyFilter getBySurveyId(Long surveyId, String email);
 

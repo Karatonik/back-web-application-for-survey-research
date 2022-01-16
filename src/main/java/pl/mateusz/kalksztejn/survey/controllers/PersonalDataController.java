@@ -5,10 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.kalksztejn.survey.models.dto.PersonalDataDTO;
-import pl.mateusz.kalksztejn.survey.models.enums.Education;
-import pl.mateusz.kalksztejn.survey.models.enums.Gender;
-import pl.mateusz.kalksztejn.survey.models.enums.LaborSector;
-import pl.mateusz.kalksztejn.survey.models.enums.MaritalStatus;
 import pl.mateusz.kalksztejn.survey.models.payload.response.SurveyInfo;
 import pl.mateusz.kalksztejn.survey.services.implementations.mappers.ModelMapper;
 import pl.mateusz.kalksztejn.survey.services.interfaces.PersonalDataService;
@@ -31,28 +27,28 @@ public class PersonalDataController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonalDataDTO> set(@RequestBody PersonalDataDTO personalDataDTO) {
+    public ResponseEntity<PersonalDataDTO> setPersonalData(@RequestBody PersonalDataDTO personalDataDTO) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService
-                .set(modelMapper.personalDataMapper(personalDataDTO)))
+                .setPersonalData(modelMapper.personalDataMapper(personalDataDTO)))
                 , HttpStatus.OK);
     }
     @PutMapping
-    public ResponseEntity<PersonalDataDTO> edit (@RequestBody PersonalDataDTO personalDataDTO) {
+    public ResponseEntity<PersonalDataDTO> editPersonalData (@RequestBody PersonalDataDTO personalDataDTO) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService
-                .edit(modelMapper.personalDataMapper(personalDataDTO)))
+                .editPersonalData(modelMapper.personalDataMapper(personalDataDTO)))
                 , HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PersonalDataDTO> get(@PathVariable @NotBlank Long id) {
-        return new ResponseEntity<>(new PersonalDataDTO(personalDataService.get(id))
+    public ResponseEntity<PersonalDataDTO> getPersonalData(@PathVariable @NotBlank Long id) {
+        return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getPersonalData(id))
                 , HttpStatus.OK);
     }
 
     @GetMapping("/e/{email}")
-    public ResponseEntity<PersonalDataDTO> getByUser(@PathVariable String email) {
-        return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getByUser(email))
+    public ResponseEntity<PersonalDataDTO> getPersonalDataByUser(@PathVariable String email) {
+        return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getPersonalDataByUser(email))
                 , HttpStatus.OK);
     }
     @GetMapping("s/{pId}/{email}")

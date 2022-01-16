@@ -50,18 +50,17 @@ public class AuthServiceImp implements AuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        //System.out.println(authentication.getName());
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getPoints(),userDetails.getEmail(),userDetails.isActivated()));
+        return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getPoints(),userDetails.getEmail(),userDetails
+                .isActivated()));
         }catch (Exception e){
             e.getStackTrace();
         }
-        return ResponseEntity.ok(new JwtResponse(null,null,null,false));
+        return ResponseEntity.ok(new JwtResponse());
     }
 
     @Override
@@ -77,7 +76,7 @@ public class AuthServiceImp implements AuthService {
 
         //wysyłanie maila z kodem potwierdzenia
         try {
-            mailService.sendConfirmation(user.getEmail());
+            mailService.sendConfirmationMail(user.getEmail());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -89,7 +88,7 @@ public class AuthServiceImp implements AuthService {
         Optional<User> optionalUser = userRepository.findById(email);
         if(optionalUser.isPresent()){
             try {
-                mailService.sendResetPassword(optionalUser.get().getEmail());
+                mailService.sendResetPasswordMail(optionalUser.get().getEmail());
             }catch (Exception e){
                 e.printStackTrace();
             }

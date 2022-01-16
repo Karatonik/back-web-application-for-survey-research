@@ -47,7 +47,7 @@ public class SurveyServiceImp implements SurveyService {
 
 
     @Override
-    public Survey get(Long surveyId, String email) {
+    public Survey getSurvey(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();
@@ -59,7 +59,7 @@ public class SurveyServiceImp implements SurveyService {
     }
 
     @Override
-    public Survey set(String name, String email) {
+    public Survey setSurvey(String name, String email) {
         System.out.println(email);
         Optional<User> optionalUser = userRepository.findById(email);
 
@@ -68,7 +68,7 @@ public class SurveyServiceImp implements SurveyService {
     }
 
     @Override
-    public boolean delete(Long surveyId, String email) {
+    public boolean deleteSurvey(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();

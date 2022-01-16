@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface SurveyService {
 
-    Survey get(Long Id, String email);
+    Survey getSurvey(Long Id, String email);
 
-    Survey set(String name, String email);
+    Survey setSurvey(String name, String email);
 
-    boolean delete(Long Id, String email);
+    boolean deleteSurvey(Long Id, String email);
 
     List<Survey> getAllByEmail(String email);
 

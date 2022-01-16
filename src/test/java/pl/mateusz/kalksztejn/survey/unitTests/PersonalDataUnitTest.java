@@ -59,7 +59,7 @@ public class PersonalDataUnitTest {
 
     @Test
     public void setTest() throws Exception{
-        when(personalDataService.set(personalData)).thenReturn(personalData);
+        when(personalDataService.setPersonalData(personalData)).thenReturn(personalData);
         when(modelMapper.personalDataMapper(any())).thenReturn(personalData);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -74,7 +74,7 @@ public class PersonalDataUnitTest {
     }
     @Test
     public void getTest() throws Exception{
-        when(personalDataService.get(anyLong())).thenReturn(personalData);
+        when(personalDataService.getPersonalData(anyLong())).thenReturn(personalData);
 
         mvc.perform(get(apiPath+"/"+personalData.getId())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class PersonalDataUnitTest {
     }
     @Test
     public void getByUserTest() throws Exception{
-        when(personalDataService.getByUser(anyString())).thenReturn(personalData);
+        when(personalDataService.getPersonalDataByUser(anyString())).thenReturn(personalData);
 
         mvc.perform(get(apiPath+"/e/"+user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())

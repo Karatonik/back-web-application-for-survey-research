@@ -4,9 +4,9 @@ import pl.mateusz.kalksztejn.survey.models.SurveyResult;
 
 public interface SurveyResultService {
 
-    SurveyResult get(Long Id);
+    SurveyResult getSurveyResult(Long Id);
 
-    boolean delete(Long Id);
+    boolean deleteSurveyResult(Long Id);
 
-    SurveyResult set(SurveyResult surveyResult, Long surveyId);
+    SurveyResult setSurveyResult(SurveyResult surveyResult, Long surveyId);
 }

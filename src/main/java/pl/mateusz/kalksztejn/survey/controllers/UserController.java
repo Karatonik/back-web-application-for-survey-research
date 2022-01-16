@@ -46,12 +46,12 @@ public class UserController {
 
     @GetMapping("p/{email}")
     public ResponseEntity<Long> getPoints(@PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(userService.getPoints(email), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserPoints(email), HttpStatus.OK);
     }
 
     @PutMapping("{email}")
     public ResponseEntity<Boolean> sendRewardEmail(@PathVariable @NotBlank String email) throws MessagingException {
-        return new ResponseEntity<Boolean>(mailService.sendRewardEmail(email), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(mailService.sendRewardMail(email), HttpStatus.OK);
     }
 
     @GetMapping(value = "r/{email}", produces = MediaType.IMAGE_JPEG_VALUE)

@@ -61,7 +61,7 @@ public class SurveyUnitTest {
 
     @Test
     public void getTest()throws Exception{
-        when(surveyService.get(anyLong(),anyString())).thenReturn(survey);
+        when(surveyService.getSurvey(anyLong(),anyString())).thenReturn(survey);
 
         mvc.perform(get(apiPath+"/"+survey.getId()+"/"+user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -69,7 +69,7 @@ public class SurveyUnitTest {
     }
     @Test
     public void setTest() throws Exception{
-        when(surveyService.set(anyString(),anyString())).thenReturn(survey);
+        when(surveyService.setSurvey(anyString(),anyString())).thenReturn(survey);
 
 
         mvc.perform(post(apiPath+"/"+survey.getName()+"/"+user.getEmail())
@@ -79,7 +79,7 @@ public class SurveyUnitTest {
     }
     @Test
     public void deleteTest() throws Exception{
-        when(surveyService.delete(anyLong(),anyString())).thenReturn(true);
+        when(surveyService.deleteSurvey(anyLong(),anyString())).thenReturn(true);
 
         mvc.perform(delete(apiPath+"/"+survey.getId()+"/"+user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -135,7 +135,7 @@ public class SurveyUnitTest {
                 .andExpect(content().string(containsString("true")));
     }
     @Test
-    public void getRespQueries() throws Exception{
+    public void getRespQueriesTest() throws Exception{
         when(surveyService.getRespQueries(anyLong(),anyLong(),anyString())).thenReturn(new ArrayList<>());
         mvc.perform(get(apiPath+"/resp/1/"+user.getEmail()+"/"+survey.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk());

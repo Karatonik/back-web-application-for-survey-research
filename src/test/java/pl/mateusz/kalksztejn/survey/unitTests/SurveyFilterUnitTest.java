@@ -52,7 +52,7 @@ public class SurveyFilterUnitTest {
 
     @Test
     public void setTest() throws Exception {
-        when(surveyFilterService.set(any())).thenReturn(surveyFilter);
+        when(surveyFilterService.setSurveyFilter(any())).thenReturn(surveyFilter);
         when(modelMapper.surveyFilterMapper(surveyFilterDTO)).thenReturn(surveyFilter);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -68,7 +68,7 @@ public class SurveyFilterUnitTest {
 
     @Test
     public void editTest() throws Exception {
-        when(surveyFilterService.edit(any())).thenReturn(surveyFilter);
+        when(surveyFilterService.editSurveyFilter(any())).thenReturn(surveyFilter);
         when(modelMapper.surveyFilterMapper(any())).thenReturn(surveyFilter);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -90,7 +90,7 @@ public class SurveyFilterUnitTest {
 
     @Test
     public void deleteTest() throws Exception {
-        when(surveyFilterService.delete(anyLong(), anyString())).thenReturn(true);
+        when(surveyFilterService.deleteSurveyFilter(anyLong(), anyString())).thenReturn(true);
 
         mvc.perform(delete(apiPath + "/" + surveyFilter.getId() + "/" + user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())

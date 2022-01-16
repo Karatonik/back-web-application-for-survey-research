@@ -54,17 +54,17 @@ public class UserServiceImp implements UserService {
 
 
     @Override
-    public User get(String email) {
+    public User getUser(String email) {
         return userRepository.getById(email);
     }
 
     @Override
-    public User set(String email, String password) {
+    public User setUser(String email, String password) {
         return userRepository.save(new User(email,password));
     }
 
     @Override
-    public boolean delete(String email) {
+    public boolean deleteUser(String email) {
         Optional<User> optionalUser = userRepository.findById(email);
         if (optionalUser.isPresent()) {
             userRepository.delete(optionalUser.get());
@@ -80,7 +80,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Long getPoints(String email) {
+    public Long getUserPoints(String email) {
         Optional<User> optionalUser = userRepository.findById(email);
         return optionalUser.map(User::getPoints).orElse(0L);
     }

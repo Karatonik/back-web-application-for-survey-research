@@ -49,7 +49,7 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public void sendConfirmation(String to) throws MessagingException {
+    public void sendConfirmationMail(String to) throws MessagingException {
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -68,7 +68,7 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public boolean sendResetPassword(String to) throws MessagingException {
+    public boolean sendResetPasswordMail(String to) throws MessagingException {
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -89,7 +89,7 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public void sendDelete(String to) throws MessagingException {
+    public void sendDeleteMail(String to) throws MessagingException {
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -140,7 +140,7 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public boolean sendRewardEmail(String to) throws MessagingException {
+    public boolean sendRewardMail(String to) throws MessagingException {
 
         Optional<User> optionalUser = userRepository.findById(to);
         if(optionalUser.isPresent()){

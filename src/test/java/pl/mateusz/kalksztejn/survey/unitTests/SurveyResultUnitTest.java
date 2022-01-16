@@ -52,7 +52,7 @@ public class SurveyResultUnitTest {
     @Test
     public void getTest() throws Exception {
 
-        when(surveyResultService.get(anyLong())).thenReturn(surveyResult);
+        when(surveyResultService.getSurveyResult(anyLong())).thenReturn(surveyResult);
 
 
         mvc.perform(get(apiPath + "/" + surveyResult.getId())
@@ -62,7 +62,7 @@ public class SurveyResultUnitTest {
 
     @Test
     public void deleteTest() throws Exception {
-        when(surveyResultService.delete(anyLong())).thenReturn(true);
+        when(surveyResultService.deleteSurveyResult(anyLong())).thenReturn(true);
 
         mvc.perform(delete(apiPath + "/" + surveyResult.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -71,7 +71,7 @@ public class SurveyResultUnitTest {
 
     @Test
     public void setTest() throws Exception {
-        when(surveyResultService.set(any(), anyLong())).thenReturn(surveyResult);
+        when(surveyResultService.setSurveyResult(any(), anyLong())).thenReturn(surveyResult);
         when(modelMapper.surveyResultMapper(any())).thenReturn(surveyResult);
 
         ObjectMapper mapper = new ObjectMapper();

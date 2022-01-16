@@ -5,15 +5,15 @@ import java.util.List;
 
 public interface MailService {
 
-    void sendConfirmation(String to) throws MessagingException;
+    void sendConfirmationMail(String to) throws MessagingException;
 
-    void sendDelete(String to) throws MessagingException;
+    void sendDeleteMail(String to) throws MessagingException;
 
-    boolean sendResetPassword(String to) throws MessagingException;
+    boolean sendResetPasswordMail(String to) throws MessagingException;
 
     void sendMail(String to, String subject, String text, boolean isHtmlContent) throws MessagingException;
 
     boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;
 
-    boolean sendRewardEmail(String to) throws MessagingException;
+    boolean sendRewardMail(String to) throws MessagingException;
 }

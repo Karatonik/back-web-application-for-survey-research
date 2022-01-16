@@ -53,7 +53,7 @@ public class UserUnitTest {
     }
     @Test
     public void getPointsTest() throws Exception{
-        when(userService.getPoints(anyString())).thenReturn(1L);
+        when(userService.getUserPoints(anyString())).thenReturn(1L);
 
         mvc.perform(get(apiPath+"/p/"+user.getEmail())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -61,7 +61,7 @@ public class UserUnitTest {
     }
     @Test
     public void sendRewardEmailTest() throws Exception{
-        when(mailService.sendRewardEmail(anyString())).thenReturn(true);
+        when(mailService.sendRewardMail(anyString())).thenReturn(true);
 
         mvc.perform(put(apiPath+"/"+user.getEmail()).contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL))
                 .andDo(print()).andExpect(status().isOk())

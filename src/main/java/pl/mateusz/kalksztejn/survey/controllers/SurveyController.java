@@ -36,23 +36,23 @@ public class SurveyController {
     }
 
     @GetMapping("/{id}/{email}")
-    public ResponseEntity<SurveyDTO> get(@PathVariable @NotBlank Long id
+    public ResponseEntity<SurveyDTO> getSurvey(@PathVariable @NotBlank Long id
             , @PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(new SurveyDTO(surveyService.get(id, email))
+        return new ResponseEntity<>(new SurveyDTO(surveyService.getSurvey(id, email))
                 , HttpStatus.OK);
     }
 
     @PostMapping("/{name}/{email}")
-    public ResponseEntity<SurveyDTO> set(@PathVariable @NotBlank String name
+    public ResponseEntity<SurveyDTO> setSurvey(@PathVariable @NotBlank String name
             , @PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(new SurveyDTO(surveyService.set(name, email))
+        return new ResponseEntity<>(new SurveyDTO(surveyService.setSurvey(name, email))
                 , HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}/{email}")
-    public ResponseEntity<Boolean> delete(@PathVariable @NotBlank Long id
+    public ResponseEntity<Boolean> deleteSurvey(@PathVariable @NotBlank Long id
             , @PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(surveyService.delete(id, email)
+        return new ResponseEntity<>(surveyService.deleteSurvey(id, email)
                 , HttpStatus.OK);
     }
 
@@ -70,7 +70,7 @@ public class SurveyController {
                 , HttpStatus.OK);
     }
     @GetMapping("/{email}")
-    public ResponseEntity<List<SurveyDTO>> getAllByEmail(@PathVariable @NotBlank String email){
+    public ResponseEntity<List<SurveyDTO>> getSurveyAllByEmail(@PathVariable @NotBlank String email){
         return  new ResponseEntity<>(surveyService.getAllByEmail(email).stream().map(SurveyDTO::new).collect(Collectors.toList())
                 ,HttpStatus.OK);
     }

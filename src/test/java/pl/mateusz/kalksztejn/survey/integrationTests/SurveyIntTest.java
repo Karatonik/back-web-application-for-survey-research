@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SurveyApplication.class)
-@AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrations.properties")
 public class SurveyIntTest {
@@ -38,18 +37,18 @@ public class SurveyIntTest {
 
     @Before
     public void init(){
-        user = userService.set(user.getEmail(),user.getPassword());
+        user = userService.setUser(user.getEmail(),user.getPassword());
         survey.setOwner(user);
     }
     @Test
     public void setTest(){
-        assertEquals(surveyService.set(survey.getName(),user.getEmail()).getName(),survey.getName());
+        assertEquals(surveyService.setSurvey(survey.getName(),user.getEmail()).getName(),survey.getName());
     }
 
     @Test
     public void getTest(){
-        survey =surveyService.set(survey.getName(),user.getEmail());
+        survey =surveyService.setSurvey(survey.getName(),user.getEmail());
 
-        assertEquals(surveyService.get(survey.getId(),user.getEmail()).getId(),survey.getId());
+        assertEquals(surveyService.getSurvey(survey.getId(),user.getEmail()).getId(),survey.getId());
     }
 }

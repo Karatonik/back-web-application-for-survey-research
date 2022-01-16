@@ -48,19 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(
                 "/configuration/security",
                 "/webjars/**",
                 "/api/auth/**",
-                "/api/mail/**",
-                "/api/user/pwd/**",
-                "/api/user/confirmation/**",
-                "/api/user/delete/**",
-                "/api/file/**",
                 "/");
     }
 
@@ -71,9 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                .antMatchers("/api/pass/**"
-                        , "api/user**"
-                        ,"api/file**").permitAll()
                 .antMatchers(HttpMethod.POST).permitAll()
                 .antMatchers(HttpMethod.DELETE).permitAll()
                 .antMatchers(HttpMethod.PUT).permitAll()

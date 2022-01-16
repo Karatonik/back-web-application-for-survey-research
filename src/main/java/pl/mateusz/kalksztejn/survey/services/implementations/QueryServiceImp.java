@@ -24,18 +24,18 @@ public class QueryServiceImp implements QueryService {
     }
 
     @Override
-    public Query set(Query query) {
+    public Query setQuery(Query query) {
         return queryRepository.save(query);
     }
 
 
     @Override
-    public Query get(Long queryId) {
+    public Query getQuery(Long queryId) {
         return queryRepository.getById(queryId);
     }
 
     @Override
-    public boolean delete(Long queryId) {
+    public boolean deleteQuery(Long queryId) {
         Optional<Query> optionalQuery = queryRepository.findById(queryId);
 
         if (optionalQuery.isPresent()) {

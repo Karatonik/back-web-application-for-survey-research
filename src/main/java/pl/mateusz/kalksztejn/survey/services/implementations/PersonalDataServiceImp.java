@@ -59,7 +59,7 @@ public class PersonalDataServiceImp implements PersonalDataService {
     }
 
     @Override
-    public PersonalData set(PersonalData personalData) {
+    public PersonalData setPersonalData(PersonalData personalData) {
         personalData.setId(null);
         PersonalData optionalPersonalData = personalDataRepository.findByUser(personalData.getUser());
         System.out.println(optionalPersonalData);
@@ -79,7 +79,7 @@ public class PersonalDataServiceImp implements PersonalDataService {
 
     @Override
     @Modifying
-    public PersonalData edit(PersonalData personalData) {
+    public PersonalData editPersonalData(PersonalData personalData) {
         Optional<User>optionalUser = userRepository.findById(personalData.getUser().getEmail());
         if(optionalUser.isPresent()){
             return  personalDataRepository.save(personalData);
@@ -88,7 +88,7 @@ public class PersonalDataServiceImp implements PersonalDataService {
     }
 
     @Override
-    public PersonalData set(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
+    public PersonalData setPersonalData(Long age, Gender gender, Long sizeOfTheHometown, Long sizeOfTown, Double grossEarnings
             , Education education, LaborSector laborSector, MaritalStatus maritalStatus, String email) {
         Optional<User> optionalUser = userRepository.findById(email);
         return optionalUser.map(user -> personalDataRepository
@@ -97,14 +97,14 @@ public class PersonalDataServiceImp implements PersonalDataService {
     }
 
     @Override
-    public PersonalData get(Long personalDataId) {
+    public PersonalData getPersonalData(Long personalDataId) {
         Optional<PersonalData> optionalPersonalData = personalDataRepository.findById(personalDataId);
         return optionalPersonalData.orElseGet(PersonalData::new);
     }
 
 
     @Override
-    public PersonalData getByUser(String email) {
+    public PersonalData getPersonalDataByUser(String email) {
         Optional<User> optionalUser = userRepository.findById(email);
         if (optionalUser.isPresent()) {
             return personalDataRepository.findByUser(optionalUser.get());

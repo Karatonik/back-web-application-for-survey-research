@@ -9,9 +9,9 @@ import java.util.Hashtable;
 
 public interface QueryService {
 
-    Query set(Query query);
+    Query setQuery(Query query);
 
-    Query get(Long Id);
+    Query getQuery(Long Id);
 
-    boolean delete(Long Id);
+    boolean deleteQuery(Long Id);
 }

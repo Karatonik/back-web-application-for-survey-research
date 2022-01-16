@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SurveyApplication.class)
-@AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrations.properties")
 public class UserIntTest {
@@ -28,22 +27,22 @@ public class UserIntTest {
 
     @Test
     public void setTest() throws Exception{
-        assertEquals(userService.set(user.getEmail(), user.getPassword()).getEmail(),user.getEmail());
+        assertEquals(userService.setUser(user.getEmail(), user.getPassword()).getEmail(),user.getEmail());
     }
     @Test
     public void getTest(){
-        user = userService.set(user.getEmail(), user.getPassword());
-        assertEquals(userService.get(user.getEmail()).getEmail(),user.getEmail());
+        user = userService.setUser(user.getEmail(), user.getPassword());
+        assertEquals(userService.getUser(user.getEmail()).getEmail(),user.getEmail());
     }
     @Test
     public void deleteTest(){
-        user = userService.set(user.getEmail(), user.getPassword());
-        assertTrue(userService.delete(user.getEmail()));
+        user = userService.setUser(user.getEmail(), user.getPassword());
+        assertTrue(userService.deleteUser(user.getEmail()));
     }
     @Test
     public void getPointsTest(){
-        user = userService.set(user.getEmail(), user.getPassword());
-        Long points = userService.getPoints(user.getEmail());
+        user = userService.setUser(user.getEmail(), user.getPassword());
+        Long points = userService.getUserPoints(user.getEmail());
         assertEquals(points.toString(),"0");
 
     }

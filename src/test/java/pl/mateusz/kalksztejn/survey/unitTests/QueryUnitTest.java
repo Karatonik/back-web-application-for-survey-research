@@ -50,7 +50,7 @@ public class QueryUnitTest {
 
     @Test
     public void setTest() throws Exception{
-        when(queryService.set(any())).thenReturn(query);
+        when(queryService.setQuery(any())).thenReturn(query);
         when(modelMapper.queryMapper(any())).thenReturn(query);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -65,7 +65,7 @@ public class QueryUnitTest {
     }
     @Test
     public void getTest() throws Exception{
-        when(queryService.get(anyLong())).thenReturn(query);
+        when(queryService.getQuery(anyLong())).thenReturn(query);
 
         mvc.perform(get(apiPath+"/"+query.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
@@ -75,7 +75,7 @@ public class QueryUnitTest {
     }
     @Test
     public void deleteTest() throws Exception{
-        when(queryService.delete(anyLong())).thenReturn(true);
+        when(queryService.deleteQuery(anyLong())).thenReturn(true);
         mvc.perform(delete(apiPath+"/"+query.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("true")));

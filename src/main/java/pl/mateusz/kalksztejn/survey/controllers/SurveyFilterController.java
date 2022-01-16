@@ -25,16 +25,16 @@ public class SurveyFilterController {
     }
 
     @PostMapping
-    public ResponseEntity<SurveyFilterDTO> set(@RequestBody SurveyFilterDTO surveyFilterDTO) {
+    public ResponseEntity<SurveyFilterDTO> setSurveyFilter(@RequestBody SurveyFilterDTO surveyFilterDTO) {
         return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService
-                .set(modelMapper.surveyFilterMapper(surveyFilterDTO)))
+                .setSurveyFilter(modelMapper.surveyFilterMapper(surveyFilterDTO)))
                 , HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<SurveyFilterDTO> edit(@RequestBody SurveyFilterDTO surveyFilterDTO) {
+    public ResponseEntity<SurveyFilterDTO> editSurveyFilter(@RequestBody SurveyFilterDTO surveyFilterDTO) {
         return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService
-                .edit(modelMapper.surveyFilterMapper(surveyFilterDTO)))
+                .editSurveyFilter(modelMapper.surveyFilterMapper(surveyFilterDTO)))
                 , HttpStatus.OK);
     }
 
@@ -47,9 +47,9 @@ public class SurveyFilterController {
 
 
     @DeleteMapping("/{id}/{email}")
-    public ResponseEntity<Boolean> delete(@PathVariable @NotBlank Long id
+    public ResponseEntity<Boolean> deleteSurveyFilter(@PathVariable @NotBlank Long id
             , @PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(surveyFilterService.delete(id, email)
+        return new ResponseEntity<>(surveyFilterService.deleteSurveyFilter(id, email)
                 , HttpStatus.OK);
     }
     @GetMapping("{surveyId}/{email}")

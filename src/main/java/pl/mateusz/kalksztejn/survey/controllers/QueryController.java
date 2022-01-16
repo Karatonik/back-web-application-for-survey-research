@@ -25,21 +25,21 @@ public class QueryController {
     }
 
     @PostMapping
-    public ResponseEntity<QueryDTO> set(@RequestBody QueryDTO queryDTO) {
+    public ResponseEntity<QueryDTO> setQuery(@RequestBody QueryDTO queryDTO) {
         return new ResponseEntity<>(new QueryDTO(queryService
-                .set(modelMapper.queryMapper(queryDTO)))
+                .setQuery(modelMapper.queryMapper(queryDTO)))
                 , HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QueryDTO> get(@PathVariable @NotBlank Long id) {
-        return new ResponseEntity<>(new QueryDTO(queryService.get(id))
+    public ResponseEntity<QueryDTO> getQuery(@PathVariable @NotBlank Long id) {
+        return new ResponseEntity<>(new QueryDTO(queryService.getQuery(id))
                 , HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable @NotBlank Long id) {
-        return new ResponseEntity<>(queryService.delete(id)
+    public ResponseEntity<Boolean> deleteQuery(@PathVariable @NotBlank Long id) {
+        return new ResponseEntity<>(queryService.deleteQuery(id)
                 , HttpStatus.OK);
     }
 }
