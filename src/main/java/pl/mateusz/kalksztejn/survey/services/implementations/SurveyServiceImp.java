@@ -239,8 +239,8 @@ public class SurveyServiceImp implements SurveyService {
         out.close();
 
         final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(fileCSV.getPath()
-
         )));
+        fileCSV.delete();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentLength(inputStream.contentLength())

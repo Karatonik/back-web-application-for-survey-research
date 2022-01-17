@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mateusz.kalksztejn.survey.models.dto.AwardDTO;
+import pl.mateusz.kalksztejn.survey.models.Award;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyDTO;
 import pl.mateusz.kalksztejn.survey.models.payload.response.UserInfo;
 import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
@@ -42,9 +42,8 @@ public class UserController {
     }
 
     @GetMapping("awards/{email}")
-    public ResponseEntity<List<AwardDTO>> getUserAwards(@PathVariable @NotBlank String email) {
-        return new ResponseEntity<>(userService.getUserAwards(email).stream().map(AwardDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+    public ResponseEntity<List<Award>> getUserAwards(@PathVariable @NotBlank String email) {
+        return new ResponseEntity<>(userService.getUserAwards(email), HttpStatus.OK);
     }
 
     @GetMapping("admin/{adminEmail}")
