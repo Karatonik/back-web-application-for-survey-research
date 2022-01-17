@@ -1,15 +1,11 @@
 package pl.mateusz.kalksztejn.survey.services.interfaces;
 
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import pl.mateusz.kalksztejn.survey.models.Award;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
+import pl.mateusz.kalksztejn.survey.models.payload.response.UserInfo;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
 
@@ -23,7 +19,11 @@ public interface UserService {
 
     Long getUserPoints(String email);
 
-    ResponseEntity<Resource> getMascot(String email) throws IOException;
-
     List<Award> getUserAwards(String email);
+
+    List<UserInfo> getAllUsers(String adminEmail);
+
+    boolean increasePermissionsForUser(String adminEmail, String userEmail);
+
+    boolean reducePermissionsForUser(String adminEmail, String userEmail);
 }

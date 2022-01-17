@@ -1,10 +1,8 @@
 package pl.mateusz.kalksztejn.survey.models;
 
 import lombok.*;
-import pl.mateusz.kalksztejn.survey.models.enums.Symbol;
 
 import javax.persistence.*;
-import java.util.Hashtable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,8 +19,7 @@ public class SurveyResult {
     @OneToOne
     private User user;
 
-
-    @Column(name="responses")
-    @ElementCollection(targetClass=String.class)
+    @Column(name = "responses")
+    @ElementCollection(targetClass = String.class)
     private List<String> responses;
 }

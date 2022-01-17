@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Setter
@@ -16,11 +15,11 @@ import java.util.Set;
 public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long Id;
+    private Long Id;
 
-   private String name;
-   @ManyToOne
-   private User owner;
+    private String name;
+    @ManyToOne
+    private User owner;
 
     @OneToMany
     @JoinColumn(name = "Query")

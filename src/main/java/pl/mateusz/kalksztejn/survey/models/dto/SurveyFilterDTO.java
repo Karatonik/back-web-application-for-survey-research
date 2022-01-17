@@ -1,7 +1,6 @@
 package pl.mateusz.kalksztejn.survey.models.dto;
 
 import lombok.*;
-import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.SurveyFilter;
 import pl.mateusz.kalksztejn.survey.models.enums.Education;
 import pl.mateusz.kalksztejn.survey.models.enums.Gender;
@@ -46,9 +45,9 @@ public class SurveyFilterDTO {
         this.sizeOfTownMin = surveyFilter.getSizeOfTownMin();
         this.sizeOfTownMax = surveyFilter.getSizeOfTownMax();
         this.grossEarningsMin = surveyFilter.getGrossEarningsMin();
-        this.grossEarningsMax =surveyFilter.getGrossEarningsMax();
+        this.grossEarningsMax = surveyFilter.getGrossEarningsMax();
         this.educations = surveyFilter.getEducations();
-        this.laborSectors =surveyFilter.getLaborSectors();
+        this.laborSectors = surveyFilter.getLaborSectors();
         this.maritalStatuses = surveyFilter.getMaritalStatuses();
     }
 }

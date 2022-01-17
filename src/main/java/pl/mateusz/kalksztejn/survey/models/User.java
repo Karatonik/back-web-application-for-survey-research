@@ -3,6 +3,7 @@ package pl.mateusz.kalksztejn.survey.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.hash.Hashing;
 import lombok.*;
+import pl.mateusz.kalksztejn.survey.models.enums.AccountType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,6 +30,9 @@ public class User {
 
     private boolean activated;
 
+    private AccountType accountType;
+
+
     @JsonIgnore
     private String userKey;
 
@@ -42,17 +46,20 @@ public class User {
         this.email = email;
         this.password = password;
         this.activated = false;
+        this.accountType = AccountType.consumer;
         this.userKey = Hashing.sha256()
                 .hashString(String.valueOf(hashCode()), StandardCharsets.UTF_8)
                 .toString();
         this.points = 0;
         this.userSurveyList = new ArrayList<>();
     }
-    public long addPoints(long points){
-        return this.points+=points;
+
+    public long addPoints(long points) {
+        return this.points += points;
     }
-    public long subtractPoints(long points){
-        return this.points-=points;
+
+    public long subtractPoints(long points) {
+        return this.points -= points;
     }
 
     @Override
@@ -66,9 +73,8 @@ public class User {
                 .toString();
     }
 
-    public boolean addAward(Award award){
-     return awards.add(award);
+    public boolean addAward(Award award) {
+        return awards.add(award);
     }
-
 
 }

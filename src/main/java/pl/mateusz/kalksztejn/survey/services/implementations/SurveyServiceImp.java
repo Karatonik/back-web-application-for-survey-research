@@ -60,10 +60,7 @@ public class SurveyServiceImp implements SurveyService {
 
     @Override
     public Survey setSurvey(String name, String email) {
-        System.out.println(email);
         Optional<User> optionalUser = userRepository.findById(email);
-
-
         return optionalUser.map(user -> surveyRepository.save(new Survey(name, user))).orElseGet(Survey::new);
     }
 
@@ -96,7 +93,7 @@ public class SurveyServiceImp implements SurveyService {
     }
 
 
-    public List<SurveyResult> getResultsFromDB(Long surveyId, String email){
+    public List<SurveyResult> getResultsFromDB(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();
@@ -116,46 +113,47 @@ public class SurveyServiceImp implements SurveyService {
                     }
                     return tempBoolean;
                 }).collect(Collectors.toList());
-            }}
-        return  new ArrayList<>();
+            }
+        }
+        return new ArrayList<>();
     }
 
 
     @Override
     public List<List<ResultDTO>> getSurveyResults(Long surveyId, String email) {
-                //getSurveyResults from DB
-                List<SurveyResult>surveyResults = getResultsFromDB(surveyId,email);
+        //getSurveyResults from DB
+        List<SurveyResult> surveyResults = getResultsFromDB(surveyId, email);
 
-                //map to List of Result List
-                List<List<ResultDTO>> foundResultsList = surveyResults.stream().map(x -> x.getResponses().stream()
-                        .map(z -> new ResultDTO(1, z))
-                        .collect(Collectors.toList())).collect(Collectors.toList());
-                //rearrange list and remove duplications
-                List<List<ResultDTO>> resultsList = new ArrayList<>();
-                if(foundResultsList.size()>0){
+        //map to List of Result List
+        List<List<ResultDTO>> foundResultsList = surveyResults.stream().map(x -> x.getResponses().stream()
+                .map(z -> new ResultDTO(1, z))
+                .collect(Collectors.toList())).collect(Collectors.toList());
+        //rearrange list and remove duplications
+        List<List<ResultDTO>> resultsList = new ArrayList<>();
+        if (foundResultsList.size() > 0) {
 
-                for (int i = 0; i < foundResultsList.get(0).size(); i++) {
-                    List<ResultDTO> resultList = new ArrayList<>();
-                    for (List<ResultDTO> results : foundResultsList) {
+            for (int i = 0; i < foundResultsList.get(0).size(); i++) {
+                List<ResultDTO> resultList = new ArrayList<>();
+                for (List<ResultDTO> results : foundResultsList) {
 
-                        ResultDTO result = results.get(i);
+                    ResultDTO result = results.get(i);
 
-                        ResultDTO finalResult = result;
-                        Optional<ResultDTO> optionalResult = resultList.stream()
-                                .filter(x -> x.getName().equals(finalResult.getName())).findFirst();
+                    ResultDTO finalResult = result;
+                    Optional<ResultDTO> optionalResult = resultList.stream()
+                            .filter(x -> x.getName().equals(finalResult.getName())).findFirst();
 
-                        if (optionalResult.isPresent()) {
-                            resultList.remove(optionalResult.get());
-                            result = optionalResult.get();
-                            result.setValue(result.getValue() + 1);
-                        }
-                        resultList.add(result);
+                    if (optionalResult.isPresent()) {
+                        resultList.remove(optionalResult.get());
+                        result = optionalResult.get();
+                        result.setValue(result.getValue() + 1);
                     }
-                    resultsList.add(resultList);
+                    resultList.add(result);
                 }
-                }
+                resultsList.add(resultList);
+            }
+        }
 
-                return resultsList;
+        return resultsList;
     }
 
     @Modifying
@@ -230,7 +228,7 @@ public class SurveyServiceImp implements SurveyService {
     @Override
     public ResponseEntity<Resource> getCSV(Long surveyId, String email) throws IOException {
         //getSurveyResults from DB
-        List<SurveyResult>surveyResults = getResultsFromDB(surveyId,email);
+        List<SurveyResult> surveyResults = getResultsFromDB(surveyId, email);
 
         File fileCSV = new File("result.csv");
         PrintWriter out = new PrintWriter(fileCSV);

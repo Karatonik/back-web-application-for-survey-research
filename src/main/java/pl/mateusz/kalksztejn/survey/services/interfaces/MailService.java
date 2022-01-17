@@ -1,5 +1,7 @@
 package pl.mateusz.kalksztejn.survey.services.interfaces;
 
+import pl.mateusz.kalksztejn.survey.models.Award;
+
 import javax.mail.MessagingException;
 import java.util.List;
 
@@ -15,5 +17,5 @@ public interface MailService {
 
     boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;
 
-    boolean sendRewardMail(String to) throws MessagingException;
+    boolean sendRewardMail(String to, Award award) throws MessagingException;
 }

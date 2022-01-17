@@ -1,33 +1,22 @@
 package pl.mateusz.kalksztejn.survey.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Award;
 import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.models.User;
+import pl.mateusz.kalksztejn.survey.models.enums.AccountType;
+import pl.mateusz.kalksztejn.survey.models.payload.response.UserInfo;
 import pl.mateusz.kalksztejn.survey.repositorys.AwardRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.UserService;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -38,17 +27,12 @@ public class UserServiceImp implements UserService {
     PasswordEncoder encoder;
 
 
-    @Value("${reward.mascot}")
-    private  long rewardMascotPoints;
-    @Value("${reward.path}")
-    private String path;
-
     @Autowired
-    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository,AwardRepository awardRepository
+    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository, AwardRepository awardRepository
             , PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.surveyRepository = surveyRepository;
-        this.awardRepository =awardRepository;
+        this.awardRepository = awardRepository;
         this.encoder = encoder;
     }
 
@@ -60,7 +44,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User setUser(String email, String password) {
-        return userRepository.save(new User(email,password));
+        return userRepository.save(new User(email, password));
     }
 
     @Override
@@ -86,34 +70,51 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ResponseEntity<Resource> getMascot(String email) throws IOException {
-        Optional<User> optionalUser = userRepository.findById(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getPoints() > rewardMascotPoints) {
-
-                Award award = awardRepository.save( new Award("Mascot",1000000L));
-                user.addAward(award);
-                user.subtractPoints(rewardMascotPoints);
-                userRepository.save(user);
-                final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
-                        path
-                )));
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .contentLength(inputStream.contentLength())
-                        .body(inputStream);
-
-            }
-        }
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(null);
-    }
-
-    @Override
     public List<Award> getUserAwards(String email) {
         Optional<User> optionalUser = userRepository.findById(email);
         return optionalUser.map(User::getAwards).orElseGet(ArrayList::new);
+    }
+
+    @Override
+    public List<UserInfo> getAllUsers(String adminEmail) {
+        Optional<User> optionalUser = userRepository.findById(adminEmail);
+        if (optionalUser.isPresent()) {
+            if (optionalUser.get().getAccountType().equals(AccountType.admin)) {
+                return userRepository.findAll().stream().map(UserInfo::new).collect(Collectors.toList());
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean increasePermissionsForUser(String adminEmail, String userEmail) {
+        Optional<User> optionalAdmin = userRepository.findById(adminEmail);
+        if (optionalAdmin.isPresent()) {
+            User admin = optionalAdmin.get();
+            if (admin.getAccountType().equals(AccountType.admin)) {
+                User user = userRepository.getById(userEmail);
+                user.setAccountType(AccountType.increaseType(user.getAccountType()));
+                userRepository.save(user);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean reducePermissionsForUser(String adminEmail, String userEmail) {
+        Optional<User> optionalAdmin = userRepository.findById(adminEmail);
+        if (optionalAdmin.isPresent()) {
+            User admin = optionalAdmin.get();
+            if (admin.getAccountType().equals(AccountType.admin)) {
+                User user = userRepository.getById(userEmail);
+                user.setAccountType(AccountType.reduceType(user.getAccountType()));
+                userRepository.save(user);
+
+                return true;
+            }
+        }
+        return false;
     }
 }

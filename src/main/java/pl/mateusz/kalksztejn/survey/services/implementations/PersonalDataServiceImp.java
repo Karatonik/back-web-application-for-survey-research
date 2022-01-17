@@ -62,7 +62,6 @@ public class PersonalDataServiceImp implements PersonalDataService {
     public PersonalData setPersonalData(PersonalData personalData) {
         personalData.setId(null);
         PersonalData optionalPersonalData = personalDataRepository.findByUser(personalData.getUser());
-        System.out.println(optionalPersonalData);
         if (optionalPersonalData == null) {
             Optional<User> optionalUser = userRepository.findById(personalData.getUser().getEmail());
 
@@ -80,9 +79,9 @@ public class PersonalDataServiceImp implements PersonalDataService {
     @Override
     @Modifying
     public PersonalData editPersonalData(PersonalData personalData) {
-        Optional<User>optionalUser = userRepository.findById(personalData.getUser().getEmail());
-        if(optionalUser.isPresent()){
-            return  personalDataRepository.save(personalData);
+        Optional<User> optionalUser = userRepository.findById(personalData.getUser().getEmail());
+        if (optionalUser.isPresent()) {
+            return personalDataRepository.save(personalData);
         }
         return new PersonalData();
     }
@@ -120,8 +119,8 @@ public class PersonalDataServiceImp implements PersonalDataService {
             if (personalData.getUser().getEmail().equals(email)) {
                 List<SurveyFilter> surveyFilters = surveyFilterRepository.findAll();
                 return surveyFilters.stream().parallel()
-                        .filter(f->f.getSurvey().getOwner() != personalData.getUser())
-                        .filter(f-> f.getSurvey().getResults().stream().parallel().noneMatch(r->r.getUser() == personalData.getUser()))
+                        .filter(f -> f.getSurvey().getOwner() != personalData.getUser())
+                        .filter(f -> f.getSurvey().getResults().stream().parallel().noneMatch(r -> r.getUser() == personalData.getUser()))
                         .filter(f -> f.getAgeMin() < personalData.getAge() && f.getAgeMax() > personalData.getAge())
                         .filter(f -> f.getGrossEarningsMin() < personalData.getGrossEarnings() && f.getGrossEarningsMax() > personalData.getGrossEarnings())
                         .filter(f -> f.getSizeOfTheHometownMin() < personalData.getSizeOfTheHometown() && f.getSizeOfTheHometownMax() > personalData.getSizeOfTheHometown())

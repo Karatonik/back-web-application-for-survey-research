@@ -55,8 +55,8 @@ public class SurveyFilterServiceImp implements SurveyFilterService {
     @Override
     @Modifying
     public SurveyFilter editSurveyFilter(SurveyFilter surveyFilter) {
-        Optional<SurveyFilter> optionalSurveyFilter =surveyFilterRepository.findById(surveyFilter.getId());
-        if(optionalSurveyFilter.isPresent()){
+        Optional<SurveyFilter> optionalSurveyFilter = surveyFilterRepository.findById(surveyFilter.getId());
+        if (optionalSurveyFilter.isPresent()) {
             Survey survey = optionalSurveyFilter.get().getSurvey();
             survey.setResults(new ArrayList<>());
             surveyRepository.save(survey);
@@ -88,11 +88,11 @@ public class SurveyFilterServiceImp implements SurveyFilterService {
     @Override
     public SurveyFilter getBySurveyId(Long surveyId, String email) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
-        if(optionalSurvey.isPresent()){
+        if (optionalSurvey.isPresent()) {
             Optional<SurveyFilter> optionalSurveyFilter = surveyFilterRepository.findBySurvey(optionalSurvey.get());
-            if(optionalSurveyFilter.isPresent()){
+            if (optionalSurveyFilter.isPresent()) {
                 SurveyFilter surveyFilter = optionalSurveyFilter.get();
-                if(surveyFilter.getSurvey().getOwner().getEmail().equals(email)){
+                if (surveyFilter.getSurvey().getOwner().getEmail().equals(email)) {
                     return surveyFilter;
                 }
             }

@@ -32,8 +32,9 @@ public class PersonalDataController {
                 .setPersonalData(modelMapper.personalDataMapper(personalDataDTO)))
                 , HttpStatus.OK);
     }
+
     @PutMapping
-    public ResponseEntity<PersonalDataDTO> editPersonalData (@RequestBody PersonalDataDTO personalDataDTO) {
+    public ResponseEntity<PersonalDataDTO> editPersonalData(@RequestBody PersonalDataDTO personalDataDTO) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService
                 .editPersonalData(modelMapper.personalDataMapper(personalDataDTO)))
                 , HttpStatus.OK);
@@ -51,9 +52,10 @@ public class PersonalDataController {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getPersonalDataByUser(email))
                 , HttpStatus.OK);
     }
+
     @GetMapping("s/{pId}/{email}")
-    public ResponseEntity<List<SurveyInfo>> getSurveys(@PathVariable @NotBlank Long pId, @PathVariable String email){
-        return new ResponseEntity<>(personalDataService.getSurveys(pId,email)
+    public ResponseEntity<List<SurveyInfo>> getSurveys(@PathVariable @NotBlank Long pId, @PathVariable String email) {
+        return new ResponseEntity<>(personalDataService.getSurveys(pId, email)
                 , HttpStatus.OK);
     }
 }

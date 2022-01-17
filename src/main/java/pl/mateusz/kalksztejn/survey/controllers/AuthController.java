@@ -17,23 +17,26 @@ import javax.validation.constraints.NotBlank;
 public class AuthController {
 
     AuthService authenticationManager;
+
     @Autowired
     public AuthController(AuthService authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("login")
-    public ResponseEntity<?> authenticate(@Valid @RequestBody  LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest) {
         return authenticationManager.authenticate(loginRequest);
     }
+
     @PostMapping("reg")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
         return authenticationManager.register(signUpRequest);
     }
+
     @PutMapping("sk")
-    public ResponseEntity<Boolean> sendKey(@RequestBody String email){
-        return new ResponseEntity<>(authenticationManager.sendKeyToChangePassword(email),HttpStatus.OK);
+    public ResponseEntity<Boolean> sendKey(@RequestBody String email) {
+        return new ResponseEntity<>(authenticationManager.sendKeyToChangePassword(email), HttpStatus.OK);
     }
 
     @PostMapping

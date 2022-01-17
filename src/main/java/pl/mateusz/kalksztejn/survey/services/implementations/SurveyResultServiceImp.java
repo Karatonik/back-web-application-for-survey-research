@@ -45,8 +45,6 @@ public class SurveyResultServiceImp implements SurveyResultService {
 
     @Override
     public SurveyResult setSurveyResult(SurveyResult surveyResult, Long surveyId) {
-        System.out.println(surveyResult);
-        System.out.println(surveyId);
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();

@@ -52,8 +52,9 @@ public class SurveyFilterController {
         return new ResponseEntity<>(surveyFilterService.deleteSurveyFilter(id, email)
                 , HttpStatus.OK);
     }
+
     @GetMapping("{surveyId}/{email}")
-    public ResponseEntity<SurveyFilterDTO>getBySurveyId(@PathVariable @NotBlank Long surveyId ,@PathVariable @NotBlank String email){
-        return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService.getBySurveyId(surveyId,email)),HttpStatus.OK);
+    public ResponseEntity<SurveyFilterDTO> getBySurveyId(@PathVariable @NotBlank Long surveyId, @PathVariable @NotBlank String email) {
+        return new ResponseEntity<>(new SurveyFilterDTO(surveyFilterService.getBySurveyId(surveyId, email)), HttpStatus.OK);
     }
 }

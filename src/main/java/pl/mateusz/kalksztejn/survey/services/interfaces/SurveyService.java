@@ -2,7 +2,9 @@ package pl.mateusz.kalksztejn.survey.services.interfaces;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import pl.mateusz.kalksztejn.survey.models.*;
+import pl.mateusz.kalksztejn.survey.models.Query;
+import pl.mateusz.kalksztejn.survey.models.Survey;
+import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.dto.ResultDTO;
 
 import java.io.IOException;
@@ -20,14 +22,14 @@ public interface SurveyService {
 
     List<List<ResultDTO>> getSurveyResults(Long Id, String email);
 
-    List<Query> setQueries(String email , Long Id, List<Query> queryList);
+    List<Query> setQueries(String email, Long Id, List<Query> queryList);
 
     List<Query> getQueries(Long surveyId);
 
     List<User> getRespondentsList(String email, Long Id);
 
-    List<Query> getRespQueries (Long pId, Long Id, String email);
+    List<Query> getRespQueries(Long pId, Long Id, String email);
 
-    ResponseEntity<Resource> getCSV (Long Id, String email) throws IOException;
+    ResponseEntity<Resource> getCSV(Long Id, String email) throws IOException;
 
 }

@@ -50,14 +50,14 @@ public class AuthServiceImp implements AuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+            UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getPoints(),userDetails.getEmail(),userDetails
-                .isActivated()));
-        }catch (Exception e){
+            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getPoints(), userDetails.getEmail(), userDetails
+                    .isActivated(), userDetails.getAccountType()));
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return ResponseEntity.ok(new JwtResponse());
@@ -65,19 +65,18 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public ResponseEntity<?> register(SignUpRequest signUpRequest) {
+
         if (userRepository.existsById(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already taken!"));
         }
-        // Create new user's account
-        User user = new User(signUpRequest.getEmail(),encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
         userRepository.save(user);
 
-        //wysyłanie maila z kodem potwierdzenia
         try {
             mailService.sendConfirmationMail(user.getEmail());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
@@ -86,10 +85,10 @@ public class AuthServiceImp implements AuthService {
     @Override
     public boolean sendKeyToChangePassword(String email) {
         Optional<User> optionalUser = userRepository.findById(email);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             try {
                 mailService.sendResetPasswordMail(optionalUser.get().getEmail());
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return true;
@@ -115,10 +114,6 @@ public class AuthServiceImp implements AuthService {
         Optional<User> optionalUser = userRepository.findByUserKey(key);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            //survey
-           // surveyRepository.deleteAll(surveyRepository.findAllByOwner(user));
-            //todo
-            //user
             userRepository.delete(user);
             return true;
         }
@@ -133,7 +128,7 @@ public class AuthServiceImp implements AuthService {
             user.getNewKey();
             user.setPassword(encoder.encode(newPassword));
             userRepository.save(user);
-            return  true;
+            return true;
         }
         return false;
     }

@@ -3,12 +3,10 @@ package pl.mateusz.kalksztejn.survey.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.Query;
-import pl.mateusz.kalksztejn.survey.models.Survey;
 import pl.mateusz.kalksztejn.survey.repositorys.QueryRepository;
 import pl.mateusz.kalksztejn.survey.repositorys.SurveyRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.QueryService;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service

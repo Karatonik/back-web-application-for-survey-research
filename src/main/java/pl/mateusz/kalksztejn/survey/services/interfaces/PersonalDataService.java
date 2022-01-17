@@ -16,10 +16,10 @@ public interface PersonalDataService {
     List<User> findAllByParameters(SurveyFilter surveyFilter);
 
     List<User> findAllByParameters(Long ageMin, Long ageMax, List<Gender> genders
-            ,List<Education> educations,Long sizeOfTheHometownMin
-            ,Long sizeOfTheHometownMax,Long sizeOfTownMin ,Long sizeOfTownMax
-            ,Double grossEarningsMin ,Double grossEarningsMax
-            ,List<LaborSector> laborSectors ,List<MaritalStatus> maritalStatuses);
+            , List<Education> educations, Long sizeOfTheHometownMin
+            , Long sizeOfTheHometownMax, Long sizeOfTownMin, Long sizeOfTownMax
+            , Double grossEarningsMin, Double grossEarningsMax
+            , List<LaborSector> laborSectors, List<MaritalStatus> maritalStatuses);
 
     PersonalData setPersonalData(PersonalData personalData);
 

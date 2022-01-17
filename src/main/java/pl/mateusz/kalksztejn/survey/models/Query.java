@@ -22,23 +22,23 @@ public class Query {
 
     private String question;
 
-   private boolean checkQuery;
+    private boolean checkQuery;
 
-   private Long correctAnswer;
+    private Long correctAnswer;
 
-   private Long maxAnswer;
+    private Long maxAnswer;
 
-    @Column(name="answers")
-    @ElementCollection(targetClass=String.class)
+    @Column(name = "answers")
+    @ElementCollection(targetClass = String.class)
     private List<String> answers;
 
-    public Query(Long numberOfQuery, String question, List<String> answers ,boolean checkQuery ,Long correctAnswer,Long maxAnswer ) {
-        this.numberOfQuery=numberOfQuery;
-        this.question=question;
-        this.answers=answers;
+    public Query(Long numberOfQuery, String question, List<String> answers, boolean checkQuery, Long correctAnswer, Long maxAnswer) {
+        this.numberOfQuery = numberOfQuery;
+        this.question = question;
+        this.answers = answers;
         this.checkQuery = checkQuery;
-        this.correctAnswer =correctAnswer;
-        this.maxAnswer =maxAnswer;
+        this.correctAnswer = correctAnswer;
+        this.maxAnswer = maxAnswer;
     }
 
     @Override

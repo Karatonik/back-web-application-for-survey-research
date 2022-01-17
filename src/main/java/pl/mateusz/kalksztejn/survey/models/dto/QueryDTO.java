@@ -27,13 +27,13 @@ public class QueryDTO {
 
     private List<String> answers;
 
-    public QueryDTO(Query query){
-        this.id=query.getId();
-        this.numberOfQuery=query.getNumberOfQuery();
-        this.question=query.getQuestion();
-        this.checkQuery=query.isCheckQuery();
-        this.correctAnswer=query.getCorrectAnswer();
-        this.answers=query.getAnswers();
-        this.maxAnswer=query.getMaxAnswer();
+    public QueryDTO(Query query) {
+        this.id = query.getId();
+        this.numberOfQuery = query.getNumberOfQuery();
+        this.question = query.getQuestion();
+        this.checkQuery = query.isCheckQuery();
+        this.correctAnswer = query.getCorrectAnswer();
+        this.answers = query.getAnswers();
+        this.maxAnswer = query.getMaxAnswer();
     }
 }

@@ -6,7 +6,7 @@ public enum LaborSector {
     industries,
     food,
     lightIndustry,
-    other,AGDRTV,
+    other, AGDRTV,
     telecommunication,
     transport,
     trade,

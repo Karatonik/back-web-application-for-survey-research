@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,40 +32,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class UserUnitTest {
     private final String apiPath = "/api/user";
+    private final User user = new User("test@mail.com", "password123456789");
+    private final UserDTO userDTO = new UserDTO(user);
     @Autowired
     private MockMvc mvc;
-
     @MockBean
     private UserService userService;
-
     @MockBean
     private MailService mailService;
 
-    private final User user =new User("test@mail.com","password123456789");
-    private final UserDTO userDTO = new UserDTO(user);
-
     @Test
-    public void getUserSurveyTest() throws Exception{
+    public void getUserSurveyTest() throws Exception {
         when(userService.getUserSurvey(anyString())).thenReturn(new ArrayList<>());
 
-        mvc.perform(get(apiPath+"/"+user.getEmail())
+        mvc.perform(get(apiPath + "/" + user.getEmail())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk());
     }
+
     @Test
-    public void getPointsTest() throws Exception{
+    public void getPointsTest() throws Exception {
         when(userService.getUserPoints(anyString())).thenReturn(1L);
 
-        mvc.perform(get(apiPath+"/p/"+user.getEmail())
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-        .andExpect(content().string(containsString("1")));
-    }
-    @Test
-    public void sendRewardEmailTest() throws Exception{
-        when(mailService.sendRewardMail(anyString())).thenReturn(true);
-
-        mvc.perform(put(apiPath+"/"+user.getEmail()).contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("true")));
+        mvc.perform(get(apiPath + "/p/" + user.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("1")));
     }
 
 

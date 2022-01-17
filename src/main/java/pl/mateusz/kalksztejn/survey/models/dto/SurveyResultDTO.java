@@ -14,7 +14,7 @@ public class SurveyResultDTO {
 
     private Long id;
 
-    private String userEmail;//chyba niebezpieczne
+    private String userEmail;
 
     private List<String> responses;
 

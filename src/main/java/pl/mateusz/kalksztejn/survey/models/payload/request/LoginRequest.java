@@ -19,5 +19,4 @@ public class LoginRequest {
     @Size(min = 8)
     private String password;
 
-
 }

@@ -7,6 +7,6 @@ import pl.mateusz.kalksztejn.survey.models.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String> {
+public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUserKey(String userKey);
 }

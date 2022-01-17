@@ -8,7 +8,7 @@ import pl.mateusz.kalksztejn.survey.models.User;
 import java.util.List;
 
 @Repository
-public interface SurveyRepository extends JpaRepository<Survey,Long> {
+public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
     List<Survey> findAllByOwner(User owner);
 }

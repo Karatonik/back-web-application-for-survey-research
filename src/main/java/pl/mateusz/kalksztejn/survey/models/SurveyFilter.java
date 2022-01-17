@@ -27,8 +27,8 @@ public class SurveyFilter {
     private Long ageMin;
     private Long ageMax;
 
-    @Column(name="genders")
-    @ElementCollection(targetClass=Gender.class)
+    @Column(name = "genders")
+    @ElementCollection(targetClass = Gender.class)
     private List<Gender> genders;
 
     private Long sizeOfTheHometownMin;
@@ -40,16 +40,16 @@ public class SurveyFilter {
     private Double grossEarningsMin;
     private Double grossEarningsMax;
 
-    @Column(name="educations")
-    @ElementCollection(targetClass=Education.class)
+    @Column(name = "educations")
+    @ElementCollection(targetClass = Education.class)
     private List<Education> educations;
 
-    @Column(name="laborSectors")
-    @ElementCollection(targetClass=LaborSector.class)
+    @Column(name = "laborSectors")
+    @ElementCollection(targetClass = LaborSector.class)
     private List<LaborSector> laborSectors;
 
-    @Column(name="maritalStatuses")
-    @ElementCollection(targetClass=MaritalStatus.class)
+    @Column(name = "maritalStatuses")
+    @ElementCollection(targetClass = MaritalStatus.class)
     private List<MaritalStatus> maritalStatuses;
 
 

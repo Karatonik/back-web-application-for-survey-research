@@ -29,17 +29,17 @@ public class PersonalDataDTO {
 
     public PersonalDataDTO(PersonalData personalData) {
 
-            if(personalData != null) {
-                this.id = personalData.getId();
-                this.age = personalData.getAge();
-                this.gender = personalData.getGender();
-                this.sizeOfTheHometown = personalData.getSizeOfTheHometown();
-                this.sizeOfTown = personalData.getSizeOfTown();
-                this.grossEarnings = personalData.getGrossEarnings();
-                this.education = personalData.getEducation();
-                this.laborSector = personalData.getLaborSector();
-                this.maritalStatus = personalData.getMaritalStatus();
-                this.userEmail = personalData.getUser().getEmail();
-            }
+        if (personalData != null) {
+            this.id = personalData.getId();
+            this.age = personalData.getAge();
+            this.gender = personalData.getGender();
+            this.sizeOfTheHometown = personalData.getSizeOfTheHometown();
+            this.sizeOfTown = personalData.getSizeOfTown();
+            this.grossEarnings = personalData.getGrossEarnings();
+            this.education = personalData.getEducation();
+            this.laborSector = personalData.getLaborSector();
+            this.maritalStatus = personalData.getMaritalStatus();
+            this.userEmail = personalData.getUser().getEmail();
+        }
     }
 }

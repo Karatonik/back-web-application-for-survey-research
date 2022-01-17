@@ -23,7 +23,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user =userRepository.findById(email)
+        User user = userRepository.findById(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
         return UserDetailsImp.build(user);
     }

@@ -41,58 +41,57 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class PersonalDataUnitTest {
     private final String apiPath = "/api/pd";
+    private final User user = new User("test@mail.com", "test123456");
+    private final PersonalData personalData = new PersonalData(1L, 18L, Gender.male, 100000L,
+            100000L, 3000.0, Education.engineer, LaborSector.unemployment,
+            MaritalStatus.single, user);
+    private final PersonalDataDTO personalDataDTO = new PersonalDataDTO(personalData);
     @Autowired
     private MockMvc mvc;
     @MockBean
     private PersonalDataService personalDataService;
-
     @MockBean
     private ModelMapper modelMapper;
 
-    private final User user = new User("test@mail.com","test123456");
-
-    private final PersonalData personalData = new PersonalData(1L,18L, Gender.male,100000L,
-            100000L,3000.0, Education.engineer, LaborSector.unemployment,
-            MaritalStatus.single,user);
-    private final PersonalDataDTO personalDataDTO= new PersonalDataDTO(personalData);
-
-
     @Test
-    public void setTest() throws Exception{
+    public void setTest() throws Exception {
         when(personalDataService.setPersonalData(personalData)).thenReturn(personalData);
         when(modelMapper.personalDataMapper(any())).thenReturn(personalData);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(personalDataDTO );
+        String requestJson = ow.writeValueAsString(personalDataDTO);
 
         mvc.perform(post(apiPath).content(requestJson)
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andExpect(status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("test@mail.com")));
     }
+
     @Test
-    public void getTest() throws Exception{
+    public void getTest() throws Exception {
         when(personalDataService.getPersonalData(anyLong())).thenReturn(personalData);
 
-        mvc.perform(get(apiPath+"/"+personalData.getId())
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("test@mail.com")));
-    }
-    @Test
-    public void getByUserTest() throws Exception{
-        when(personalDataService.getPersonalDataByUser(anyString())).thenReturn(personalData);
-
-        mvc.perform(get(apiPath+"/e/"+user.getEmail())
+        mvc.perform(get(apiPath + "/" + personalData.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("test@mail.com")));
     }
-    @Test
-    public void getSurveysTest() throws Exception{
-        when(personalDataService.getSurveys(anyLong(),anyString())).thenReturn(new ArrayList<>());
 
-        mvc.perform(get(apiPath+"/s/"+personalData.getId()+"/"+user.getEmail())
+    @Test
+    public void getByUserTest() throws Exception {
+        when(personalDataService.getPersonalDataByUser(anyString())).thenReturn(personalData);
+
+        mvc.perform(get(apiPath + "/e/" + user.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("test@mail.com")));
+    }
+
+    @Test
+    public void getSurveysTest() throws Exception {
+        when(personalDataService.getSurveys(anyLong(), anyString())).thenReturn(new ArrayList<>());
+
+        mvc.perform(get(apiPath + "/s/" + personalData.getId() + "/" + user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL))
                 .andDo(print()).andExpect(status().isOk());
     }

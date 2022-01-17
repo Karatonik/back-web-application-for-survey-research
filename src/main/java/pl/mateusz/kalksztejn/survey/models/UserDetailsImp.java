@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.mateusz.kalksztejn.survey.models.enums.AccountType;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,21 +28,23 @@ public class UserDetailsImp implements UserDetails {
     private String password;
 
     private boolean activated;
+    private AccountType accountType;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImp(String email,Long points, String password, boolean activated) {
+    public UserDetailsImp(String email,Long points, String password, boolean activated, AccountType accountType) {
         this.email = email;
         this.password = password;
         this.points = points;
         this.authorities = new HashSet<>();
         this.activated=activated;
+        this.accountType = accountType;
     }
     public static UserDetailsImp build(User user) {
 
         return new UserDetailsImp(
                 user.getEmail(), user.getPoints(),
-                user.getPassword(),user.isActivated());
+                user.getPassword(),user.isActivated(), user.getAccountType());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

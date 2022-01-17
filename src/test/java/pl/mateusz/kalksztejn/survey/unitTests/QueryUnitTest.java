@@ -37,46 +37,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class QueryUnitTest {
 
     private final String apiPath = "/api/que";
+    private final Query query = new Query(1L, 1L, "test", false, 0L, 1L, new ArrayList<>());
+    private final QueryDTO queryDTO = new QueryDTO(query);
     @Autowired
     private MockMvc mvc;
-
-
     @MockBean
     private QueryService queryService;
     @MockBean
     private ModelMapper modelMapper;
-    private final Query query = new Query(1L,1L,"test",false,0L,1L,new ArrayList<>());
-    private final QueryDTO queryDTO = new QueryDTO(query);
 
     @Test
-    public void setTest() throws Exception{
+    public void setTest() throws Exception {
         when(queryService.setQuery(any())).thenReturn(query);
         when(modelMapper.queryMapper(any())).thenReturn(query);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(queryDTO );
+        String requestJson = ow.writeValueAsString(queryDTO);
 
         mvc.perform(post(apiPath).content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("test")));
     }
+
     @Test
-    public void getTest() throws Exception{
+    public void getTest() throws Exception {
         when(queryService.getQuery(anyLong())).thenReturn(query);
 
-        mvc.perform(get(apiPath+"/"+query.getId())
+        mvc.perform(get(apiPath + "/" + query.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("test")));
 
 
     }
+
     @Test
-    public void deleteTest() throws Exception{
+    public void deleteTest() throws Exception {
         when(queryService.deleteQuery(anyLong())).thenReturn(true);
-        mvc.perform(delete(apiPath+"/"+query.getId())
+        mvc.perform(delete(apiPath + "/" + query.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("true")));
     }

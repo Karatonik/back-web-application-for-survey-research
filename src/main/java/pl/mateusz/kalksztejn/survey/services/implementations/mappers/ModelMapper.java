@@ -19,18 +19,20 @@ public class ModelMapper {
     SurveyRepository surveyRepository;
     SurveyResultRepository surveyResultRepository;
     UserRepository userRepository;
+    RewardRepository rewardRepository;
 
     @Autowired
-    public ModelMapper( PersonalDataRepository personalDataRepository
+    public ModelMapper(PersonalDataRepository personalDataRepository
             , QueryRepository queryRepository, SurveyFilterRepository surveyFilterRepository
             , SurveyRepository surveyRepository, SurveyResultRepository surveyResultRepository
-            , UserRepository userRepository) {
+            , UserRepository userRepository, RewardRepository rewardRepository) {
         this.personalDataRepository = personalDataRepository;
         this.queryRepository = queryRepository;
         this.surveyFilterRepository = surveyFilterRepository;
         this.surveyRepository = surveyRepository;
         this.surveyResultRepository = surveyResultRepository;
         this.userRepository = userRepository;
+        this.rewardRepository = rewardRepository;
     }
 
     public SurveyResult surveyResultMapper(SurveyResultDTO resultDTO) {
@@ -45,9 +47,9 @@ public class ModelMapper {
     public Query queryMapper(QueryDTO queryDTO) {
         Query query = new Query();
 
-        if(queryDTO.getId() == 0){
+        if (queryDTO.getId() == 0) {
             query.setId(null);
-        }else{
+        } else {
             query.setId(queryDTO.getId());
         }
         query.setId(queryDTO.getId());
@@ -60,11 +62,12 @@ public class ModelMapper {
 
         return query;
     }
-    public SurveyFilter surveyFilterMapper(SurveyFilterDTO surveyFilterDTO){
+
+    public SurveyFilter surveyFilterMapper(SurveyFilterDTO surveyFilterDTO) {
         SurveyFilter surveyFilter = new SurveyFilter();
-        if(surveyFilterDTO.getId() ==0){
+        if (surveyFilterDTO.getId() == 0) {
             surveyFilter.setId(null);
-        }else{
+        } else {
             surveyFilter.setId(surveyFilterDTO.getId());
         }
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyFilterDTO.getSurveyId());
@@ -93,11 +96,12 @@ public class ModelMapper {
 
         return surveyFilter;
     }
-    public PersonalData personalDataMapper(PersonalDataDTO personalDataDTO){
+
+    public PersonalData personalDataMapper(PersonalDataDTO personalDataDTO) {
         PersonalData personalData = new PersonalData();
 
-        Optional<User> optionalUser =userRepository.findById(personalDataDTO.getUserEmail());
-        if(optionalUser.isPresent()) {
+        Optional<User> optionalUser = userRepository.findById(personalDataDTO.getUserEmail());
+        if (optionalUser.isPresent()) {
             personalData.setUser(optionalUser.get());
             personalData.setId(personalDataDTO.getId());
             personalData.setAge(personalDataDTO.getAge());

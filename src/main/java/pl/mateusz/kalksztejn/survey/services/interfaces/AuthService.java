@@ -16,5 +16,5 @@ public interface AuthService {
 
     boolean deleteWithKey(String key);
 
-    boolean changePassword(String key , String newPassword);
+    boolean changePassword(String key, String newPassword);
 }
