@@ -11,7 +11,6 @@ import pl.mateusz.kalksztejn.survey.repositorys.UserRepository;
 import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
 import pl.mateusz.kalksztejn.survey.services.interfaces.RewardService;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +37,7 @@ public class RewardServiceImp implements RewardService {
     }
 
     @Override
-    public boolean getRewardForUser(String name, String email) throws MessagingException {
+    public boolean getRewardForUser(String name, String email) {
 
         Optional<User> optionalUser = userRepository.findById(email);
 
@@ -57,8 +56,7 @@ public class RewardServiceImp implements RewardService {
 
                     userRepository.save(user);
                     rewardRepository.save(reward);
-                    mailService.sendRewardMail(email, award);
-
+                        mailService.sendRewardMail(email, award);
                     return true;
                 }
             }

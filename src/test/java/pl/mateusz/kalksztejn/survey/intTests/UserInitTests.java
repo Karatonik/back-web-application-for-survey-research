@@ -1,4 +1,4 @@
-package pl.mateusz.kalksztejn.survey.unitTests;
+package pl.mateusz.kalksztejn.survey.intTests;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.mateusz.kalksztejn.survey.SurveyApplication;
 import pl.mateusz.kalksztejn.survey.models.User;
 import pl.mateusz.kalksztejn.survey.models.dto.UserDTO;
-import pl.mateusz.kalksztejn.survey.services.interfaces.MailService;
 import pl.mateusz.kalksztejn.survey.services.interfaces.UserService;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {SurveyApplication.class})
 @SpringBootTest
-public class UserUnitTest {
+public class UserInitTests {
     private final String apiPath = "/api/user";
     private final User user = new User("test@mail.com", "password123456789");
     private final UserDTO userDTO = new UserDTO(user);
@@ -38,11 +37,9 @@ public class UserUnitTest {
     private MockMvc mvc;
     @MockBean
     private UserService userService;
-    @MockBean
-    private MailService mailService;
 
     @Test
-    public void getUserSurveyTest() throws Exception {
+    public void getUserSurvey_expectStatusOk() throws Exception {
         when(userService.getUserSurvey(anyString())).thenReturn(new ArrayList<>());
 
         mvc.perform(get(apiPath + "/" + user.getEmail())
@@ -50,10 +47,10 @@ public class UserUnitTest {
     }
 
     @Test
-    public void getPointsTest() throws Exception {
+    public void getUserPoints_expectOnePoint() throws Exception {
         when(userService.getUserPoints(anyString())).thenReturn(1L);
 
-        mvc.perform(get(apiPath + "/p/" + user.getEmail())
+        mvc.perform(get(apiPath + "/points/" + user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("1")));
     }

@@ -1,4 +1,4 @@
-package pl.mateusz.kalksztejn.survey.unitTests;
+package pl.mateusz.kalksztejn.survey.intTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {SurveyApplication.class})
 @SpringBootTest
-public class SurveyResultUnitTest {
+public class SurveyResultInitTests {
     private final String apiPath = "/api/res";
     private final User user = new User("test@mail.com", "password123456789");
     private final Survey survey = new Survey(1L, "Test survey", user, new ArrayList<>(), new ArrayList<>());
@@ -50,18 +50,18 @@ public class SurveyResultUnitTest {
     private ModelMapper modelMapper;
 
     @Test
-    public void getTest() throws Exception {
+    public void getSurveyResult_expectContainEmail() throws Exception {
 
         when(surveyResultService.getSurveyResult(anyLong())).thenReturn(surveyResult);
 
 
         mvc.perform(get(apiPath + "/" + surveyResult.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("test@mail.com")));
+                .andExpect(content().string(containsString(user.getEmail())));
     }
 
     @Test
-    public void deleteTest() throws Exception {
+    public void deleteSurveyResult_expectContainTrue() throws Exception {
         when(surveyResultService.deleteSurveyResult(anyLong())).thenReturn(true);
 
         mvc.perform(delete(apiPath + "/" + surveyResult.getId())
@@ -70,7 +70,7 @@ public class SurveyResultUnitTest {
     }
 
     @Test
-    public void setTest() throws Exception {
+    public void setSurveyResult_expectContainEmail() throws Exception {
         when(surveyResultService.setSurveyResult(any(), anyLong())).thenReturn(surveyResult);
         when(modelMapper.surveyResultMapper(any())).thenReturn(surveyResult);
 
@@ -81,6 +81,6 @@ public class SurveyResultUnitTest {
 
         mvc.perform(post(apiPath + "/" + surveyResult.getId()).content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("test@mail.com")));
+                .andExpect(content().string(containsString(user.getEmail())));
     }
 }

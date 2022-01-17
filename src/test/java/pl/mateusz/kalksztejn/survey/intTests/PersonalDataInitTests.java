@@ -1,4 +1,4 @@
-package pl.mateusz.kalksztejn.survey.unitTests;
+package pl.mateusz.kalksztejn.survey.intTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {SurveyApplication.class})
 @SpringBootTest
-public class PersonalDataUnitTest {
+public class PersonalDataInitTests {
     private final String apiPath = "/api/pd";
     private final User user = new User("test@mail.com", "test123456");
     private final PersonalData personalData = new PersonalData(1L, 18L, Gender.male, 100000L,
@@ -54,7 +54,7 @@ public class PersonalDataUnitTest {
     private ModelMapper modelMapper;
 
     @Test
-    public void setTest() throws Exception {
+    public void setPersonalData_responseShouldContainEmail() throws Exception {
         when(personalDataService.setPersonalData(personalData)).thenReturn(personalData);
         when(modelMapper.personalDataMapper(any())).thenReturn(personalData);
 
@@ -66,32 +66,32 @@ public class PersonalDataUnitTest {
         mvc.perform(post(apiPath).content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString("test@mail.com")));
+                .andExpect(content().string(containsString(user.getEmail())));
     }
 
     @Test
-    public void getTest() throws Exception {
+    public void getPersonalData_responseShouldContainEmail() throws Exception {
         when(personalDataService.getPersonalData(anyLong())).thenReturn(personalData);
 
         mvc.perform(get(apiPath + "/" + personalData.getId())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("test@mail.com")));
+                .andExpect(content().string(containsString(user.getEmail())));
     }
 
     @Test
-    public void getByUserTest() throws Exception {
+    public void getPersonalDataByUser_responseShouldContainEmail() throws Exception {
         when(personalDataService.getPersonalDataByUser(anyString())).thenReturn(personalData);
 
-        mvc.perform(get(apiPath + "/e/" + user.getEmail())
+        mvc.perform(get(apiPath + "/user/" + user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("test@mail.com")));
+                .andExpect(content().string(containsString(user.getEmail())));
     }
 
     @Test
-    public void getSurveysTest() throws Exception {
+    public void getSurveysTest_expectStatusOk() throws Exception {
         when(personalDataService.getSurveys(anyLong(), anyString())).thenReturn(new ArrayList<>());
 
-        mvc.perform(get(apiPath + "/s/" + personalData.getId() + "/" + user.getEmail())
+        mvc.perform(get(apiPath + "/surveys/" + personalData.getId() + "/" + user.getEmail())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL))
                 .andDo(print()).andExpect(status().isOk());
     }

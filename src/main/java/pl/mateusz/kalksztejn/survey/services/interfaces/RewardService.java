@@ -9,7 +9,7 @@ public interface RewardService {
 
     Reward setReward(Reward reward);
 
-    boolean getRewardForUser(String name, String email) throws MessagingException;
+    boolean getRewardForUser(String name, String email);
 
     List<Reward> getAllReward();
 

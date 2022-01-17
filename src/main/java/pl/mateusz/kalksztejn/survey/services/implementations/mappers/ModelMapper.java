@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.kalksztejn.survey.models.*;
 import pl.mateusz.kalksztejn.survey.models.dto.PersonalDataDTO;
-import pl.mateusz.kalksztejn.survey.models.dto.QueryDTO;
+
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyFilterDTO;
 import pl.mateusz.kalksztejn.survey.models.dto.SurveyResultDTO;
 import pl.mateusz.kalksztejn.survey.repositorys.*;
@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class ModelMapper {
     PersonalDataRepository personalDataRepository;
-    QueryRepository queryRepository;
     SurveyFilterRepository surveyFilterRepository;
     SurveyRepository surveyRepository;
     SurveyResultRepository surveyResultRepository;
@@ -27,7 +26,6 @@ public class ModelMapper {
             , SurveyRepository surveyRepository, SurveyResultRepository surveyResultRepository
             , UserRepository userRepository, RewardRepository rewardRepository) {
         this.personalDataRepository = personalDataRepository;
-        this.queryRepository = queryRepository;
         this.surveyFilterRepository = surveyFilterRepository;
         this.surveyRepository = surveyRepository;
         this.surveyResultRepository = surveyResultRepository;
@@ -42,25 +40,6 @@ public class ModelMapper {
         result.setResponses(resultDTO.getResponses());
 
         return result;
-    }
-
-    public Query queryMapper(QueryDTO queryDTO) {
-        Query query = new Query();
-
-        if (queryDTO.getId() == 0) {
-            query.setId(null);
-        } else {
-            query.setId(queryDTO.getId());
-        }
-        query.setId(queryDTO.getId());
-        query.setNumberOfQuery(queryDTO.getNumberOfQuery());
-        query.setQuestion(queryDTO.getQuestion());
-        query.setCheckQuery(queryDTO.isCheckQuery());
-        query.setCorrectAnswer(queryDTO.getCorrectAnswer());
-        query.setAnswers(queryDTO.getAnswers());
-        query.setMaxAnswer(queryDTO.getMaxAnswer());
-
-        return query;
     }
 
     public SurveyFilter surveyFilterMapper(SurveyFilterDTO surveyFilterDTO) {

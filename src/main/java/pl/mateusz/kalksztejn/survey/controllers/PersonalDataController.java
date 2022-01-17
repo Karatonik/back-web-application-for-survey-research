@@ -47,14 +47,14 @@ public class PersonalDataController {
                 , HttpStatus.OK);
     }
 
-    @GetMapping("/e/{email}")
-    public ResponseEntity<PersonalDataDTO> getPersonalDataByUser(@PathVariable String email) {
+    @GetMapping("/user/{email}")
+    public ResponseEntity<PersonalDataDTO> getPersonalDataByUser(@PathVariable @NotBlank String email) {
         return new ResponseEntity<>(new PersonalDataDTO(personalDataService.getPersonalDataByUser(email))
                 , HttpStatus.OK);
     }
 
-    @GetMapping("s/{pId}/{email}")
-    public ResponseEntity<List<SurveyInfo>> getSurveys(@PathVariable @NotBlank Long pId, @PathVariable String email) {
+    @GetMapping("surveys/{pId}/{email}")
+    public ResponseEntity<List<SurveyInfo>> getSurveys(@PathVariable @NotBlank Long pId, @PathVariable @NotBlank String email) {
         return new ResponseEntity<>(personalDataService.getSurveys(pId, email)
                 , HttpStatus.OK);
     }

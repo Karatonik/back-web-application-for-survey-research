@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface MailService {
 
-    void sendConfirmationMail(String to) throws MessagingException;
+    void sendConfirmationMail(String to);
 
-    void sendDeleteMail(String to) throws MessagingException;
+    void sendDeleteMail(String to);
 
-    boolean sendResetPasswordMail(String to) throws MessagingException;
+    boolean sendResetPasswordMail(String to);
 
-    void sendMail(String to, String subject, String text, boolean isHtmlContent) throws MessagingException;
+    void sendMail(String to, String subject, String text, boolean isHtmlContent);
 
-    boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException;
+    boolean sendMailsWithSurvey(List<String> respondents, Long surveyId);
 
-    boolean sendRewardMail(String to, Award award) throws MessagingException;
+    boolean sendRewardMail(String to, Award award);
 }

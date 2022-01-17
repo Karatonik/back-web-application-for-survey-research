@@ -1,4 +1,4 @@
-package pl.mateusz.kalksztejn.survey.unitTests;
+package pl.mateusz.kalksztejn.survey.intTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {SurveyApplication.class})
 @SpringBootTest
-public class SurveyFilterUnitTest {
+public class SurveyFilterInitTests {
     private final String apiPath = "/api/fil";
     private final User user = new User("test@mail.com", "password123456789");
     private final Survey survey = new Survey(1L, "Test survey", user, new ArrayList<>(), new ArrayList<>());
@@ -51,7 +51,7 @@ public class SurveyFilterUnitTest {
     private ModelMapper modelMapper;
 
     @Test
-    public void setTest() throws Exception {
+    public void setSurveyFilter_expectStatusOk() throws Exception {
         when(surveyFilterService.setSurveyFilter(any())).thenReturn(surveyFilter);
         when(modelMapper.surveyFilterMapper(surveyFilterDTO)).thenReturn(surveyFilter);
 
@@ -67,7 +67,7 @@ public class SurveyFilterUnitTest {
     }
 
     @Test
-    public void editTest() throws Exception {
+    public void editSurveyFilter_expectStatusOk() throws Exception {
         when(surveyFilterService.editSurveyFilter(any())).thenReturn(surveyFilter);
         when(modelMapper.surveyFilterMapper(any())).thenReturn(surveyFilter);
 
@@ -81,7 +81,7 @@ public class SurveyFilterUnitTest {
     }
 
     @Test
-    public void addSurveyToFilterTest() throws Exception {
+    public void addSurveyToFilter_expectStatusOk() throws Exception {
         when(surveyFilterService.addSurveyToFilter(anyLong(), anyLong())).thenReturn(true);
 
         mvc.perform(put(apiPath + "/" + survey.getId() + "/" + surveyFilter.getId())
@@ -89,7 +89,7 @@ public class SurveyFilterUnitTest {
     }
 
     @Test
-    public void deleteTest() throws Exception {
+    public void deleteSurveyFilter_expectContainTrue() throws Exception {
         when(surveyFilterService.deleteSurveyFilter(anyLong(), anyString())).thenReturn(true);
 
         mvc.perform(delete(apiPath + "/" + surveyFilter.getId() + "/" + user.getEmail())
@@ -98,7 +98,7 @@ public class SurveyFilterUnitTest {
     }
 
     @Test
-    public void getBySurveyIdTest() throws Exception {
+    public void getBySurveyId_expectStatusOk() throws Exception {
         when(surveyFilterService.getBySurveyId(anyLong(), anyString())).thenReturn(surveyFilter);
 
         mvc.perform(get(apiPath + "/" + surveyFilter.getId() + "/" + user.getEmail())

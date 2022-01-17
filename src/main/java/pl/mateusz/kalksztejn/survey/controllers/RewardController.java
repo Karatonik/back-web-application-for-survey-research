@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.kalksztejn.survey.models.Reward;
-import pl.mateusz.kalksztejn.survey.services.implementations.mappers.ModelMapper;
 import pl.mateusz.kalksztejn.survey.services.interfaces.RewardService;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -17,12 +15,10 @@ import java.util.List;
 public class RewardController {
 
     RewardService rewardService;
-    ModelMapper modelMapper;
 
     @Autowired
-    public RewardController(RewardService rewardService, ModelMapper modelMapper) {
+    public RewardController(RewardService rewardService) {
         this.rewardService = rewardService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping
@@ -32,7 +28,7 @@ public class RewardController {
     }
 
     @GetMapping("{name}/{email}")
-    public ResponseEntity<Boolean> getRewardForUser(@PathVariable String name, @PathVariable String email) throws MessagingException {
+    public ResponseEntity<Boolean> getRewardForUser(@PathVariable String name, @PathVariable String email) {
         return new ResponseEntity<>(rewardService.getRewardForUser(name, email), HttpStatus.OK);
     }
 

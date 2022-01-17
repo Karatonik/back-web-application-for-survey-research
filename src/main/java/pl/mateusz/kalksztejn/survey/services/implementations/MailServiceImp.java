@@ -48,109 +48,128 @@ public class MailServiceImp implements MailService {
     }
 
     @Override
-    public void sendConfirmationMail(String to) throws MessagingException {
+    public void sendConfirmationMail(String to)  {
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Confirmation");
+            try {
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setTo(to);
+                mimeMessageHelper.setSubject("Confirmation");
 
-            User user = optionalUser.get();
-            user.getNewKey();
-            userRepository.save(user);
-            //activation link in the console
-            System.out.println(confMessage + user.getUserKey() + ">Link</a>");
+                User user = optionalUser.get();
+                user.getNewKey();
+                userRepository.save(user);
+                //activation link in the console
+                System.out.println(confMessage + user.getUserKey() + ">Link</a>");
 
-            mimeMessageHelper.setText(confMessage + user.getUserKey() + "\">Link</a>", true);
-            javaMailSender.send(mimeMessage);
+                mimeMessageHelper.setText(confMessage + user.getUserKey() + "\">Link</a>", true);
+                javaMailSender.send(mimeMessage);
+            }catch (MessagingException m){
+                m.printStackTrace();
+            }
         }
     }
 
     @Override
-    public boolean sendResetPasswordMail(String to) throws MessagingException {
+    public boolean sendResetPasswordMail(String to){
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Reset Password");
-            User user = optionalUser.get();
-            user.getNewKey();
-            userRepository.save(user);
-
-
-            mimeMessageHelper.setText(resetMessage + user.getUserKey() + "\">Link</a>", true);
-            javaMailSender.send(mimeMessage);
-            return true;
+            try {
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setTo(to);
+                mimeMessageHelper.setSubject("Reset Password");
+                User user = optionalUser.get();
+                user.getNewKey();
+                userRepository.save(user);
+                mimeMessageHelper.setText(resetMessage + user.getUserKey() + "\">Link</a>", true);
+                javaMailSender.send(mimeMessage);
+                return true;
+            }catch (MessagingException m){
+                m.printStackTrace();
+            }
         }
         return false;
     }
 
     @Override
-    public void sendDeleteMail(String to) throws MessagingException {
+    public void sendDeleteMail(String to){
         Optional<User> optionalUser = userRepository.findById(to);
         if (optionalUser.isPresent()) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Delete Account");
+            try {
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setTo(to);
+                mimeMessageHelper.setSubject("Delete Account");
 
-            User user = optionalUser.get();
-            user.getNewKey();
-            userRepository.save(user);
+                User user = optionalUser.get();
+                user.getNewKey();
+                userRepository.save(user);
 
-            mimeMessageHelper.setText(deleteMessage + user.getUserKey(), true);
-            javaMailSender.send(mimeMessage);
+                mimeMessageHelper.setText(deleteMessage + user.getUserKey(), true);
+                javaMailSender.send(mimeMessage);
+            }catch (MessagingException m){
+                m.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void sendMail(String to, String subject, String text, boolean isHtmlContent) throws MessagingException {
+    public void sendMail(String to, String subject, String text, boolean isHtmlContent) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(text, isHtmlContent);
-        javaMailSender.send(mimeMessage);
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setTo(to);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setText(text, isHtmlContent);
+            javaMailSender.send(mimeMessage);
+        }catch (MessagingException m ){
+            m.printStackTrace();
+        }
     }
 
     @Override
-    public boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) throws MessagingException {
+    public boolean sendMailsWithSurvey(List<String> respondents, Long surveyId) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(surveyId);
         if (optionalSurvey.isPresent()) {
             Survey survey = optionalSurvey.get();
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            respondents.stream().parallel().forEach(respondent -> {
-                try {
-                    mimeMessageHelper.setTo(respondent);
-                    mimeMessageHelper.setSubject("New Survey waiting for you");
-                    mimeMessageHelper.setText(invMessage + survey.getName(), true);
-                    javaMailSender.send(mimeMessage);
-                } catch (MessagingException e) {
-                    System.out.println(e.getMessage());
-                }
-            });
-            return true;
+            try {
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                respondents.stream().parallel().forEach(respondent -> {
+                    try {
+                        mimeMessageHelper.setTo(respondent);
+                        mimeMessageHelper.setSubject("New Survey waiting for you");
+                        mimeMessageHelper.setText(invMessage + survey.getName(), true);
+                        javaMailSender.send(mimeMessage);
+                    } catch (MessagingException m) {
+                        m.printStackTrace();
+                    }
+                });
+                return true;
+            } catch (MessagingException m) {
+                m.printStackTrace();
+            }
         }
         return false;
     }
 
     @Override
-    public boolean sendRewardMail(String to, Award award) throws MessagingException {
+    public boolean sendRewardMail(String to, Award award) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject(String.format("you purchased %s on the site", award.getName()));
-        mimeMessageHelper.setText(String.format(rewardMessage, award.getName(), award.getCost(), award.getLocalDateTime()), false);
-        javaMailSender.send(mimeMessage);
-
-
-        return true;
-
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setTo(to);
+            mimeMessageHelper.setSubject(String.format("you purchased %s on the site", award.getName()));
+            mimeMessageHelper.setText(String.format(rewardMessage, award.getName(), award.getCost()
+                    , award.getLocalDateTime()), false);
+            javaMailSender.send(mimeMessage);
+            return true;
+        } catch (MessagingException m) {
+            m.printStackTrace();
+        }
+        return false;
     }
-
-
 }

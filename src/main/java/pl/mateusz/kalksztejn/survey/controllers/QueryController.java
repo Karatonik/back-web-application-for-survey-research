@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mateusz.kalksztejn.survey.models.dto.QueryDTO;
+import pl.mateusz.kalksztejn.survey.models.Query;
 import pl.mateusz.kalksztejn.survey.services.implementations.mappers.ModelMapper;
 import pl.mateusz.kalksztejn.survey.services.interfaces.QueryService;
 
@@ -25,16 +25,13 @@ public class QueryController {
     }
 
     @PostMapping
-    public ResponseEntity<QueryDTO> setQuery(@RequestBody QueryDTO queryDTO) {
-        return new ResponseEntity<>(new QueryDTO(queryService
-                .setQuery(modelMapper.queryMapper(queryDTO)))
-                , HttpStatus.OK);
+    public ResponseEntity<Query> setQuery(@RequestBody Query query) {
+        return new ResponseEntity<>(queryService.setQuery(query), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QueryDTO> getQuery(@PathVariable @NotBlank Long id) {
-        return new ResponseEntity<>(new QueryDTO(queryService.getQuery(id))
-                , HttpStatus.OK);
+    public ResponseEntity<Query> getQuery(@PathVariable @NotBlank Long id) {
+        return new ResponseEntity<>(queryService.getQuery(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
