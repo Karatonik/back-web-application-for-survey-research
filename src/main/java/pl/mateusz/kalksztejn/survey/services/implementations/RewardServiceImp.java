@@ -47,16 +47,21 @@ public class RewardServiceImp implements RewardService {
                 User user = optionalUser.get();
                 Reward reward = optionalReward.get();
 
-                if ((user.getPoints() >= reward.getCost()) && reward.getQuantity() > 0) {
+                if ((user.getPoints() >= reward.getCost())) {
                     user.subtractPoints(reward.getCost());
-                    reward.setQuantity(reward.getQuantity() - 1);
 
                     Award award = new Award(reward.getName(), reward.getCost());
                     user.addAward(this.awardRepository.save(award));
 
                     userRepository.save(user);
-                    rewardRepository.save(reward);
-                        mailService.sendRewardMail(email, award);
+                    if (reward.getQuantity() == 0) {
+                        rewardRepository.delete(reward);
+                    } else {
+                        reward.setQuantity(reward.getQuantity() - 1);
+                        rewardRepository.save(reward);
+                    }
+
+                    mailService.sendRewardMail(email, award);
                     return true;
                 }
             }

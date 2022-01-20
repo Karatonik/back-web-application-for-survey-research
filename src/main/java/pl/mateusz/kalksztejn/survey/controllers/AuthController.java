@@ -16,45 +16,39 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    AuthService authenticationManager;
+    AuthService authService;
 
     @Autowired
-    public AuthController(AuthService authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest) {
-        return authenticationManager.authenticate(loginRequest);
+        return authService.authenticate(loginRequest);
     }
 
     @PostMapping("reg")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
-        return authenticationManager.register(signUpRequest);
+        return authService.register(signUpRequest);
     }
 
-    @PutMapping("sk")
+    @PutMapping
     public ResponseEntity<Boolean> sendKey(@RequestBody String email) {
-        return new ResponseEntity<>(authenticationManager.sendKeyToChangePassword(email), HttpStatus.OK);
+        return new ResponseEntity<>(authService.sendKeyToChangePassword(email), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Boolean> confirmation(@RequestBody String key) {
-        return new ResponseEntity<>(authenticationManager.confirmation(key)
-                , HttpStatus.OK);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteWithKey(@RequestBody String key) {
-        return new ResponseEntity<>(authenticationManager.deleteWithKey(key)
+        return new ResponseEntity<>(authService.confirmation(key)
                 , HttpStatus.OK);
     }
 
     @PutMapping("/{key}/{nPass}")
     public ResponseEntity<Boolean> changePassword(@PathVariable @NotBlank String key
             , @PathVariable @NotBlank String nPass) {
-        return new ResponseEntity<>(authenticationManager.changePassword(key, nPass)
+        return new ResponseEntity<>(authService.changePassword(key, nPass)
                 , HttpStatus.OK);
     }
 }
