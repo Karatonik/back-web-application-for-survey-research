@@ -24,16 +24,14 @@ public class UserServiceImp implements UserService {
     UserRepository userRepository;
     SurveyRepository surveyRepository;
     AwardRepository awardRepository;
-    PasswordEncoder encoder;
-
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository, AwardRepository awardRepository
-            , PasswordEncoder encoder) {
+    public UserServiceImp(UserRepository userRepository, SurveyRepository surveyRepository,
+                          AwardRepository awardRepository) {
         this.userRepository = userRepository;
         this.surveyRepository = surveyRepository;
         this.awardRepository = awardRepository;
-        this.encoder = encoder;
+
     }
 
 
